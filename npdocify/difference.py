@@ -47,6 +47,6 @@ class Diff:
         new_lines = lines.copy()
         for i, line in enumerate(self.lines):
             start, end = self.ranges[i]
-            del new_lines[start : end]
-            new_lines[start : start] = self.split_line(line)
+            del new_lines[start:end]
+            new_lines[start:start] = self.split_line(line)
         return new_lines
