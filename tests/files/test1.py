@@ -1,3 +1,4 @@
+# type: ignore
 """A test module.
 
 Contains some functions for testing the parser.
