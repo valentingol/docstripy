@@ -1,1 +1,1 @@
-"""Parse docstring sections."""
+"""Common functions to parse docstrings."""

@@ -3,7 +3,6 @@ import pytest
 import pytest_check as check
 
 from npdocify.difference import Diff
-from npdocify.write import lines_change
 
 
 def test_diff() -> None:
@@ -17,7 +16,7 @@ def test_diff() -> None:
         '    r"""New function."""\n',
         '    """Other new function.\n    On multiple lines.\n    """\n',
     ]
-    new_lines = lines_change(lines, Diff(range_docstr, text))
+    new_lines = Diff(range_docstr, text).apply_diff(lines)
 
     check.equal(new_lines[8], '    r"""New function."""\n')
     check.equal(new_lines[9], "    if n < 0:\n")
@@ -25,7 +24,7 @@ def test_diff() -> None:
     check.equal(new_lines[18], "    On multiple lines.\n")
     check.equal(new_lines[19], '    """\n')
 
-    new_lines = lines_change(lines, Diff(range_docstr[::-1], text[::-1]))
+    new_lines = Diff(range_docstr[::-1], text[::-1]).apply_diff(lines)
 
     check.equal(new_lines[8], '    r"""New function."""\n')
     check.equal(new_lines[9], "    if n < 0:\n")
@@ -34,4 +33,4 @@ def test_diff() -> None:
     check.equal(new_lines[19], '    """\n')
 
     with pytest.raises(ValueError, match="Found overlapping ranges."):
-        lines_change(lines, Diff([[7, 23], [15, 32]], text))
+        Diff([[7, 23], [15, 32]], text).apply_diff(lines)

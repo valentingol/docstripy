@@ -2,9 +2,20 @@
 
 from typing import List
 
+from npdocify.lines_routines import add_eol, clean_trailing_spaces, remove_eol
+
 
 def line_break(lines: List[str], max_line_length: int) -> List[str]:
     """Break lines at a given length."""
+    new_lines = remove_eol(lines)
+    new_lines = rec_line_break(new_lines, max_line_length=max_line_length)
+    new_lines = clean_trailing_spaces(new_lines)
+    new_lines = add_eol(new_lines)
+    return new_lines
+
+
+def rec_line_break(lines: List[str], max_line_length: int) -> List[str]:
+    """Break lines recursively."""
     new_lines = []
     remaining_lines = []
     for i_l, line in enumerate(lines):
@@ -53,4 +64,4 @@ if __name__ == "__main__":
     ]
     lines = line_break(docstring, 50)
     for line in lines:
-        print(line)
+        print(line, end="")

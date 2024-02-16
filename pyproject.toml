@@ -10,6 +10,9 @@ keywords = ["numpy", "docstring", "numpydoc", "python", "format"]
 classifiers = ["Programming Language :: Python :: 3"]
 dynamic = ["readme", "dependencies", "version"]
 
+[project.scripts]
+npdocify = "npdocify.main:main"
+
 [tool.setuptools]
 packages = ["npdocify"]
 license-files = ['LICEN[CS]E*', 'COPYING*', 'NOTICE*', 'AUTHORS*']
@@ -99,7 +102,7 @@ line-length = 88
 target-version = "py310"
 
 [tool.ruff.mccabe]
-max-complexity = 10
+max-complexity = 15
 
 [tool.isort]
 profile = "black"

@@ -2,8 +2,8 @@
 from typing import List
 
 
-def docstring_parse_file(lines: List[str]) -> List[List[int]]:
-    """Parse source code lines.
+def docstring_parse_file_range(lines: List[str]) -> List[List[int]]:
+    """Parse source code lines ranges.
 
     Parameters
     ----------
@@ -12,11 +12,11 @@ def docstring_parse_file(lines: List[str]) -> List[List[int]]:
 
     Returns
     -------
-    range_docstr : List[List[int]]
+    range_docstrs : List[List[int]]
         List of ranges of docstring line numbers [start, end]. Includes line at start,
         excludes line at end.
     """
-    range_docstr = []
+    range_docstrs = []
     in_docstr = False
     docstring_starters = ('"""', "'''", 'r"""', "r'''")
     for i, line in enumerate(lines):
@@ -27,7 +27,7 @@ def docstring_parse_file(lines: List[str]) -> List[List[int]]:
                 (strip_line.count('"""') > 1 or strip_line.count("'''") > 1)
                 and not in_docstr
             ):
-                range_docstr.append([i, i + 1])
+                range_docstrs.append([i, i + 1])
             else:
                 # Case multi-line docstring
                 if not in_docstr:
@@ -35,6 +35,10 @@ def docstring_parse_file(lines: List[str]) -> List[List[int]]:
                     in_docstr = True
                 else:
                     current_range.append(i + 1)
-                    range_docstr.append(current_range)
+                    range_docstrs.append(current_range)
                     in_docstr = False
-    return range_docstr
+        elif in_docstr and strip_line.endswith('"""') or strip_line.endswith("'''"):
+            current_range.append(i + 1)
+            range_docstrs.append(current_range)
+            in_docstr = False
+    return range_docstrs

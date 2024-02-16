@@ -3,16 +3,17 @@
 from typing import Any, Dict, List
 
 from npdocify.line_break import line_break
-from npdocify.lines_routines import remove_eol
+from npdocify.lines_routines import clean_trailing_spaces, remove_eol
 
 
-def build_doc_numpy(sections_dict: Dict[str, Any], indent: int) -> List[str]:
+def build_doc_numpy(
+    current_docstring: List[str],
+    sections_dict: Dict[str, Any],
+    max_len: int,
+    indent: int,
+) -> List[str]:
     """Build docstring for numpy style."""
-    docstring = sections_dict["_title"]
-    docstring[0] = '"""' + docstring[0]
-    if len(sections_dict) == 1 and len(docstring) == 1:
-        docstring[0] += '"""'
-        return docstring
+    docstring = current_docstring.copy()
     for section_name in ("_parameters", "_raises", "_returns", "_attributes"):
         if section_name in sections_dict:
             header = section_name[1:].capitalize()
@@ -21,6 +22,7 @@ def build_doc_numpy(sections_dict: Dict[str, Any], indent: int) -> List[str]:
             docstring.append("-" * len(header) + "\n")
             doc_params = build_section_params_numpy(
                 sections_dict[section_name],
+                max_len=max_len,
                 indent=indent,
             )
             docstring.extend(doc_params)
@@ -31,38 +33,41 @@ def build_doc_numpy(sections_dict: Dict[str, Any], indent: int) -> List[str]:
             docstring.append("-" * len(section_name) + "\n")
             docstring.extend(sections_dict[section_name])
     docstring.append('"""\n')
+    docstring = clean_trailing_spaces(docstring)
     return docstring
 
 
-def build_section_params_numpy(param_dicts: List[dict], indent: int) -> List[str]:
+def build_section_params_numpy(
+    param_dicts: List[dict],
+    max_len: int,
+    indent: int,
+) -> List[str]:
     """Build parameters, returns, raises, and attributes sections for numpy style."""
     docstring = []
     for param_dict in param_dicts:
         param_docstring = []
         first_line = ""
-        if "name" in param_dict:
+        if "name" in param_dict and param_dict["name"]:
             first_line += param_dict["name"] + " : "
-        if "type" in param_dict:
+        if "type" in param_dict and param_dict["type"]:
             first_line += param_dict["type"]
-            if "optional" in param_dict:
+            if "optional" in param_dict and param_dict["optional"]:
                 first_line += ", optional"
             if "name" not in param_dict:
                 first_line += " : "
         param_docstring.append(first_line + "\n")
-        if "description" in param_dict:
+        if "description" in param_dict and param_dict["description"]:
             param_docstring.extend(param_dict["description"])
-        if "default" in param_dict:
+        if "default" in param_dict and param_dict["default"]:
             if "description" not in param_dict or len(param_docstring[-1]) > 50:
                 line = "By default, " + param_dict["default"] + ".\n"
                 param_docstring.append(line)
             else:
                 param_docstring[-1] = param_docstring[-1].rstrip("\n")
                 param_docstring[-1] += " By default, " + param_dict["default"] + ".\n"
-        param_docstring = remove_eol(param_docstring)
-        param_docstring = line_break(param_docstring, 80 - indent * 2)
+        param_docstring = line_break(param_docstring, max_len - indent)
         for i, line in enumerate(param_docstring):
             if i > 0:
                 param_docstring[i] = " " * indent + line
-            param_docstring[i] += "\n"
         docstring.extend(param_docstring)
     return docstring

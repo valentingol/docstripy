@@ -28,6 +28,16 @@ def factorial_google(n):
 
     Returns:
         int: Factorial of n.
+
+    Examples:
+    >>> factorial_google(5)
+    120
+
+    Notes:
+        This is a note.
+
+    Raises:
+        ValueError: If n is negative.
     """  # noqa: D406, D407, D205
     if n < 0:
         raise ValueError("Cannot compute factorial of negative number.")
@@ -48,6 +58,15 @@ def factorial_numpy(n):
     -------
     int :
         Factorial of n.
+
+    Notes
+    -----
+    This is a note.
+
+    Examples
+    --------
+    >>> factorial_numpy(5)
+    120
     """
     if n < 0:
         raise ValueError("Cannot compute factorial of negative number.")
