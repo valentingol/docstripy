@@ -1,6 +1,8 @@
 """Global docstring building functions."""
-from typing import Dict, List
 
+from typing import List
+
+from npdocify.build_doc.preprocessing import preprocess_title_build
 from npdocify.google.build_doc import build_doc_google
 from npdocify.line_break import line_break
 from npdocify.numpy.build_doc import build_doc_numpy
@@ -8,7 +10,7 @@ from npdocify.rest.build_doc import build_doc_rest
 
 
 def build_docstring(
-    sections: List[Dict],
+    sections: dict,
     docstr_config: dict,
     indent_base: int,
 ) -> List[str]:
@@ -21,6 +23,10 @@ def build_docstring(
         "google": build_doc_google,
         "rest": build_doc_rest,
     }
+    sections["_title"] = preprocess_title_build(
+        sections["_title"],
+        max_len=max_len - indent_base,
+    )
     docstring = sections["_title"].copy()
     esc_char = "r" if sections["_escaped"] else ""
     docstring[0] = esc_char + '"""' + docstring[0]
