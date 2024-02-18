@@ -11,12 +11,12 @@ This is a subtitle.
 :type param1: :obj:`int`, optional
 :param param2: This is another parameter, defaults to ''.
 :type param2: str, optional
-:atribute attr1: This is an attribute, defaults to 0.
-:type attr1: int
 :raises ValueError: If something goes wrong.
 :rtype: int
 :return result2: The second result.
 :rtype result2: str
+:atribute attr1: This is an attribute, defaults to 0.
+:type attr1: int
 
 Example:
     This is an example.
