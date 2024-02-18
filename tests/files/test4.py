@@ -3,13 +3,13 @@
 
 Contains some functions for testing the parser.
 """
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
-def myfunc_rest(
-    name1: List[bool],
+def myfunc_rest(  # pylint: disable=W0102
+    name1: List[bool],  # noqa
     name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
+    name3: Dict[str, int] = {"a,b": 1},
 ):
     r"""A function.
 
@@ -20,8 +20,8 @@ def myfunc_rest(
     :param name2: A list or a string.
 
         This parameter is very important.
-    :type name2: list | str, optional
-    :param name3: A dictionary, default is {"a": 1}.
+    :type name2: list | bool, optional
+    :param name3: A dictionary.
     :type name3: Dict[str, int] optional
     :raises ValueError: When something happened
     :raises ValueError: When something else happened
@@ -48,11 +48,9 @@ def myfunc_rest(
     return 0, [], 0
 
 
-def myfunc_numpy(
-    name1: List[bool],
-    name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
-):
+def myfunc_numpy(  # pylint: disable=W0102,W9010
+    name1: List[bool], name2: list | str = "", name3: Dict[str, int] = {"a,b": 1}
+) -> Tuple[int, List, int]:
     r"""A function.
 
     It does something not important but the title
@@ -62,12 +60,12 @@ def myfunc_numpy(
     ----------
     name1 :
         A list of bools.
-    name2 : list | str, optional
+    name2 :
         A list or a string.
 
         This parameter is very important.
     name3 : Dict[str, int] optional
-        A dictionary, default is {"a": 1}.
+        A dictionary, default is {"a,b": 1}.
 
     Raises
     ------
@@ -109,11 +107,9 @@ def myfunc_numpy(
     return 0, [], 0
 
 
-def myfunc_google(
-    name1: List[bool],
-    name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
-):
+def myfunc_google(  # pylint: disable=W0102,W9015,W9010
+    name1: List[bool], name2: list | str = "", name3: Dict[str, int] = {"a,b": 1}
+) -> Tuple[int, List, int]:
     r"""A function.
 
     It does something not important but the title
@@ -124,7 +120,7 @@ def myfunc_google(
         name2 (list | str, optional): A list or a string.
 
             This parameter is very important.
-        name3 (Dict[str, int] optional): A dictionary, default is {"a": 1}.
+        name3 (Dict[str, int] optional): A dictionary, default is {"c": 1}.
 
     Raises:
         ValueError: When something happened

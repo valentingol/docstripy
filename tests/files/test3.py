@@ -6,10 +6,10 @@ Contains some functions for testing the parser.
 from typing import Dict, List
 
 
-def myfunc_rest(
+def myfunc_rest(  # pylint: disable=W0102
     name1: List[bool],
     name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
+    name3: Dict[str, int] = {"a": 1},
 ):
     """A function.
 
@@ -35,7 +35,7 @@ def myfunc_rest(
     return 0
 
 
-def myfunc_rest2(a: int=2):
+def myfunc_rest2(a: int = 2):
     """Do nothing, a function without indices in docstring.
 
     :param a:
@@ -43,10 +43,10 @@ def myfunc_rest2(a: int=2):
     return a
 
 
-def myfunc_numpy(
+def myfunc_numpy(  # pylint: disable=W0102
     name1: List[bool],
     name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
+    name3: Dict[str, int] = {"a": 1},
 ):
     """A function.
 
@@ -76,7 +76,7 @@ def myfunc_numpy(
     return 0
 
 
-def myfunc_numpy2(a: int=2):
+def myfunc_numpy2(a: int = 2):
     """Do nothing, a function without indices in docstring.
 
     Parameters
@@ -86,10 +86,8 @@ def myfunc_numpy2(a: int=2):
     return a
 
 
-def myfunc_google(
-    name1: List[bool],
-    name2: list | str = "",
-    name3: Dict[str, int]={"a": 1}
+def myfunc_google(  # pylint: disable=W0102
+    name1: List[bool], name2: list | str = "", name3: Dict[str, int] = {"a": 1}
 ):
     """Do nothing, a function without indices in docstring.
 
@@ -110,7 +108,7 @@ def myfunc_google(
     return 0
 
 
-def myfunc_google2(a: int=2):
+def myfunc_google2(a: int = 2):
     """Do nothing, a function without indices in docstring.
 
     Args:
