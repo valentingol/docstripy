@@ -18,6 +18,8 @@ def rec_line_break(lines: List[str], max_line_length: int) -> List[str]:
     """Break lines recursively."""
     new_lines = []
     remaining_lines = []
+    if max_line_length <= 0:
+        return lines
     for i_l, line in enumerate(lines):
         if len(line) <= max_line_length:
             new_lines.append(line)
@@ -48,20 +50,3 @@ def rec_line_break(lines: List[str], max_line_length: int) -> List[str]:
         remaining_lines = line_break(remaining_lines, max_line_length)
         new_lines.extend(remaining_lines)
     return new_lines
-
-
-if __name__ == "__main__":
-    docstring = [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi "
-        "ut aliquip ex ea commodo consequat. ",
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum ",
-        "",
-        "dolore eu fugiat nulla pariatur. ",
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui "
-        "officia deserunt mollit anim id est laborum.",
-    ]
-    lines = line_break(docstring, 50)
-    for line in lines:
-        print(line, end="")
