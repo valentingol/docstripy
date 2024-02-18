@@ -29,18 +29,47 @@ Install the library via pip:
 pip install git+https://github.com/valentingol/npdocify
 ```
 
-Use it like that to write the files in place:
+Use it like that to write the files in place.
+Set a directory path to transform all python files in it.
 
 ```bash
-npdocify <dir/file path> -s=<style> --indent=<n_indent> --length=<len>
+npdocify <dir-or-file_path> -s=<style> -o=<output_path>
 ```
 
 Available styles (`style`) are:
 
-* "numpy": Numpy doc style
+* "numpy": Numpy doc style (default)
 * "google": Google style
 * "rest": ReST style
 
-`n_indent` is the number of indentation spaces convention of you file (generally 4 or 2). By default 4.
+## Cool features
 
-`len` is the maximum length of your output files. By default 88.
+### Overwrite the files directly
+
+You can use the `-w` (or `--overwrite`) option to write the files in place.
+
+```bash
+npdocify <dir-or-file_path> -s=<style> -w
+```
+
+*Note*: The module takes into account the fonction definitions.
+If the definition of the function bring new information, this will be added to the docstring.
+In case of a conflict, the information in **the function definition will be prioritized**.
+It means that npdocify will automatically update your docstring if you update your functions!
+
+### Max line length
+
+You can control the max line length of the docstring with the `--len` option.
+By default, there is no limit. The line lenght take into account the indentation
+found in the file.
+
+### 2 spaces indentation
+
+If your files are indented with 2 spaces, you can use the `--n_indent=2` option to
+the command line.
+
+```bash
+npdocify <dir-or-file_path> -s=<style> --n_indent=2
+```
+
+Note that the default value is 4 spaces but you can set any value you want.
