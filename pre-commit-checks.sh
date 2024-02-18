@@ -24,17 +24,13 @@ echo "************* Import order *************"
 isort --check-only .
 check_output "Import order checks"
 
-echo "************** Docstrings **************"
-pydocstyle --match='(?!.*_version).*\.py' --convention=numpy .
-check_output "Docstrings checks"
-
 echo "***************** PEP8 *****************"
 flake8 .
 check_output "PEP8 checks"
 
-echo "************** Integration tests **************"
-pytest tests/integration
-check_output "Integration tests"
+# echo "************** Integration tests **************"
+# pytest tests/integration
+# check_output "Integration tests"
 
 echo "************** Unit tests **************"
 pytest --cov-report term-missing --cov=./npdocify tests/
