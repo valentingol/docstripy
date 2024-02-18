@@ -14,8 +14,14 @@ def build_doc_rest(
 ) -> List[str]:
     """Build docstring for rest style."""
     docstring = current_docstring.copy()
-    for section_name in ("_parameters", "_attributes", "_raises", "_returns"):
-        if section_name in sections_dict:
+    for section_name in (
+        "_parameters",
+        "_raises",
+        "_returns",
+        "_yields",
+        "_attributes",
+    ):
+        if section_name in sections_dict and sections_dict[section_name]:
             doc_params = build_section_params_rest(
                 sections_dict[section_name],
                 max_len=max_len,

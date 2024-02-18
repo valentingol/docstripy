@@ -20,8 +20,14 @@ def build_doc_google(
         "_returns": "Returns:",
         "_attributes": "Attributes:",
     }
-    for section_name in ("_parameters", "_raises", "_returns", "_attributes"):
-        if section_name in sections_dict:
+    for section_name in (
+        "_parameters",
+        "_raises",
+        "_returns",
+        "_yields",
+        "_attributes",
+    ):
+        if section_name in sections_dict and sections_dict[section_name]:
             docstring.append("\n")
             header = section_to_header[section_name]
             docstring.append(header + "\n")

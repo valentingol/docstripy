@@ -3,7 +3,7 @@
 from typing import Any, Dict, List
 
 from npdocify.line_break import line_break
-from npdocify.lines_routines import clean_trailing_spaces, remove_eol
+from npdocify.lines_routines import clean_trailing_spaces
 
 
 def build_doc_numpy(
@@ -14,8 +14,14 @@ def build_doc_numpy(
 ) -> List[str]:
     """Build docstring for numpy style."""
     docstring = current_docstring.copy()
-    for section_name in ("_parameters", "_raises", "_returns", "_attributes"):
-        if section_name in sections_dict:
+    for section_name in (
+        "_parameters",
+        "_raises",
+        "_returns",
+        "_yields",
+        "_attributes",
+    ):
+        if section_name in sections_dict and sections_dict[section_name]:
             header = section_name[1:].capitalize()
             docstring.append("\n")
             docstring.append(header + "\n")
