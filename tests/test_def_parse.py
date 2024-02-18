@@ -1,10 +1,11 @@
 """Test def line parsing."""
+
 import pytest_check as check
 
 from npdocify.parse_doc.parse_def import parse_def
 
 
-def test_parse_def():
+def test_parse_def() -> None:
     """Test parse_args function."""
     lines = [
         "def my_func(\n",
@@ -47,3 +48,16 @@ def test_parse_def():
     check.equal(len(args), len(expected_args))
     for i, arg in enumerate(args):
         check.equal(arg, expected_args[i], f"Error at arg {i}")
+    lines = ["def my_func(n):\n"]
+    fn_name, rtype, args = parse_def(lines)
+    check.equal(fn_name, "my_func")
+    check.equal(rtype, [])
+    expected_args = [
+        {
+            "name": "n",
+            "type": "",
+            "default": "",
+            "optional": False,
+        },
+    ]
+    check.equal(args, expected_args)

@@ -1,11 +1,12 @@
 """Test params parsing."""
+
 import pytest_check as check
 
 from npdocify.lines_routines import remove_indent
 from npdocify.parse_doc.parse_params import parse_params_all
 
 
-def test_params():
+def test_params() -> None:
     """Test params parsing."""
     with open("tests/files/test3.py", "r", encoding="utf-8") as file:
         lines = file.readlines()
@@ -13,7 +14,7 @@ def test_params():
     params_rest = parse_params_all(rest_doc1, style="rest")
     np_doc1 = remove_indent(lines[55:68])
     params_np = parse_params_all(np_doc1, style="numpy")
-    google_doc1 = remove_indent(lines[95:104])
+    google_doc1 = remove_indent(lines[93:102])
     params_google = parse_params_all(google_doc1, style="google")
     expected_list = [
         {
@@ -31,7 +32,7 @@ def test_params():
                 "A list or a string.\n",
                 "This parameter is very important.\n",
                 "\n",
-                "Very important.\n"
+                "Very important.\n",
             ],
             "default": "an empty list",
         },
@@ -40,7 +41,7 @@ def test_params():
             "type": "Dict[str, int]",
             "optional": True,
             "description": ["A dictionary.\n"],
-            "default": "{\"a\": 1}",
+            "default": '{"a": 1}',
         },
     ]
     check.equal(params_rest, expected_list)
@@ -51,7 +52,7 @@ def test_params():
     params_dict_rest2 = parse_params_all(rest_doc2, style="rest")
     np_doc2 = remove_indent(lines[81:84])
     params_dict_np2 = parse_params_all(np_doc2, style="numpy")
-    google_doc2 = remove_indent(lines[115:117])
+    google_doc2 = remove_indent(lines[113:115])
     params_dict_google2 = parse_params_all(google_doc2, style="google")
     expected_dict = [
         {"name": "a", "type": "", "optional": False, "description": [], "default": ""},

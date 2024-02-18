@@ -1,4 +1,5 @@
 """Tests for file parsing functions."""
+
 import pytest_check as check
 
 from npdocify.parse_doc.main_parser import parse_docstring
@@ -25,7 +26,7 @@ def test_parse_docstring() -> None:
         "_parameters": [
             {
                 "name": "name1",
-                "type": "",
+                "type": "List[bool]",
                 "optional": False,
                 "description": ["A list of bools.\n"],
                 "default": "",
@@ -39,14 +40,14 @@ def test_parse_docstring() -> None:
                     "\n",
                     "This parameter is very important.\n",
                 ],
-                "default": "",
+                "default": '""',
             },
             {
                 "name": "name3",
                 "type": "Dict[str, int]",
                 "optional": True,
                 "description": ["A dictionary.\n"],
-                "default": '{"a": 1}',
+                "default": '{"a,b": 1}',
             },
         ],
         "_raises": [
@@ -59,7 +60,7 @@ def test_parse_docstring() -> None:
                 "name": "ValueError",
                 "type": "",
                 "description": ["When something else happened.\n"],
-            }
+            },
         ],
         "_returns": [
             {
@@ -95,12 +96,19 @@ def test_parse_docstring() -> None:
         "Notes": [
             "* This always works\n",
             "* This is a note\n",
-        ]
+        ],
     }
     for i in range(3):
-        for key in expected_dict:
+        for key, val in expected_dict.items():
+            if key != "_parameters":
+                check.equal(
+                    sections_list[i][key],
+                    val,
+                    f"Error with style {i} and key {key}.",
+                )
+        for j, param in enumerate(sections_list[i]["_parameters"]):
             check.equal(
-                sections_list[i][key],
-                expected_dict[key],
-                f"Error with style {i} and key {key}.",
+                param,
+                expected_dict["_parameters"][j],  # type: ignore
+                f"Error with style {i} and parameter {j}.",
             )

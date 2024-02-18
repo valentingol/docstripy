@@ -1,4 +1,5 @@
 """Test docstring building."""
+
 import pytest
 import pytest_check as check
 
@@ -82,18 +83,16 @@ def test_build_docstring(sections_dict: dict) -> None:
         "google": docstrings[33:69],
         "numpy": docstrings[70:117],
     }
-    docstr_config = {"max_len": 76, "indent": 4}
+    docstr_config: dict = {"max_len": 76, "indent": 4}
     for style, expected_docstr in expected_docstrs.items():
         docstr_config["style"] = style
         docstring = build_docstring(
-            sections=sections_dict,
-            docstr_config=docstr_config,
-            indent_base=0
+            sections=sections_dict, docstr_config=docstr_config, indent_base=0
         )
         for i, (line, expected_line) in enumerate(zip(docstring, expected_docstr)):
             check.equal(
                 line,
                 expected_line,
                 f"\nStyle {style}\nExpected:\n{expected_line}"
-                f"\nGot:\n{line}\n(index {i})"
+                f"\nGot:\n{line}\n(index {i})",
             )

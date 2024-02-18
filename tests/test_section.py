@@ -1,4 +1,5 @@
 """Test docstring section parser."""
+
 import pytest_check as check
 
 from npdocify.parse_doc.main_parser import parse_all
@@ -30,8 +31,8 @@ def test_parse_section() -> None:
         ],
         "_raises": [{"name": "ValueError", "description": [], "type": ""}],
     }
-    for key in expected_sections:
-        check.equal(sections1[key], expected_sections[key], f"error with key {key}")
+    for key, val in expected_sections.items():
+        check.equal(sections1[key], val, f"error with key {key}")
     sections2 = parse_all(lines[32:33])
     expected_sections = {
         "_escaped": False,

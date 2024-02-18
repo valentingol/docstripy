@@ -1,4 +1,5 @@
 """Parser for Google style docstrings."""
+
 import re
 from typing import Dict, List
 
@@ -21,7 +22,7 @@ def parse_params(lines: List[str], section_name: str) -> List[dict]:
     # Skip the first line
     lines = lines[1:]
     lines = remove_indent(lines)
-    params_list = []
+    params_list: List[dict] = []
     for line in lines:
         if not line.startswith(" ") and line.strip() != "":
             split_dots = re.split(r":\s|\n", line, maxsplit=1)
@@ -75,9 +76,7 @@ def parse_sections_ranges(lines: List[str]) -> Dict:
     returns_start, returns_end = find_prefix(
         lines, ("Return:", "Returns:"), ("\n", " ")
     )
-    yields_start, yields_end = find_prefix(
-        lines, ("Yields:", "Yield:"), ("\n", " ")
-    )
+    yields_start, yields_end = find_prefix(lines, ("Yields:", "Yield:"), ("\n", " "))
     attr_start, attr_end = find_prefix(
         lines, ("Attributes:", "Attribute:"), ("\n", " ")
     )
@@ -86,7 +85,7 @@ def parse_sections_ranges(lines: List[str]) -> Dict:
         "_raises": [raises_start, raises_end],
         "_returns": [returns_start, returns_end],
         "_yields": [yields_start, yields_end],
-        "_attributes": [attr_start, attr_end]
+        "_attributes": [attr_start, attr_end],
     }
 
 
@@ -101,7 +100,7 @@ def parse_wild_sections_ranges(lines: List[str]) -> Dict:
         "attribute",
         "yield",
     ]
-    known_sections += [f"{name}s" for name in known_sections]   # variations with s
+    known_sections += [f"{name}s" for name in known_sections]  # variations with s
     for i, line in enumerate(lines):
         if is_define_section(line):
             section_name = line[:-2].strip()
@@ -113,7 +112,7 @@ def parse_wild_sections_ranges(lines: List[str]) -> Dict:
     return sec_ranges
 
 
-def is_define_section(line: str):
+def is_define_section(line: str) -> bool:
     """Check if a line define a Google wild section or not."""
     if not line or not line.endswith(":\n"):
         return False

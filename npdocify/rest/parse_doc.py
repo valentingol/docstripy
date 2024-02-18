@@ -1,4 +1,5 @@
 """Parser for ReST style docstrings."""
+
 import re
 from typing import Dict, List
 
@@ -6,9 +7,7 @@ from npdocify.lines_routines import find_prefix, remove_indent
 
 
 def parse_params(
-    lines: List[str],
-    section_name: str = "param",
-    pattern_type: str = "type"
+    lines: List[str], section_name: str = "param", pattern_type: str = "type"
 ) -> List[dict]:
     """Parse parameter section from reStructuredText format.
 
@@ -23,7 +22,7 @@ def parse_params(
     pattern_type : str
         Pattern before element name for type: `:<pattern> name: <type>`
     """
-    params_list = []
+    params_list: List[dict] = []
     len_pattern_1 = len(":" + section_name)
     len_pattern_2 = len(":" + pattern_type)
     for line in lines:
@@ -49,7 +48,7 @@ def parse_params(
                 type_p = type_p[:-8].strip()
                 optional = True
             else:
-                type_p = type_p
+                type_p = type_p.strip()
                 optional = False
             if len(params_list) == 0 or params_list[-1]["type"] != "":
                 # New param without description

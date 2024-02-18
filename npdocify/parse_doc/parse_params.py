@@ -1,4 +1,5 @@
 """Parameter section parsing functions."""
+
 from functools import partial
 from typing import List, Tuple
 
@@ -69,7 +70,9 @@ def parse_params_all(
         "google": parse_params_google,
         "numpy": parse_params_numpy,
     }
-    params_list = parse_funcs[style](lines=lines, section_name=section_name)
+    params_list = parse_funcs[style](
+        lines=lines, section_name=section_name
+    )  # type: ignore
 
     for param_dict in params_list:
         description = param_dict["description"]
@@ -101,7 +104,7 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
         "Default to ",
         "by default",
         "By default",
-        "defaults : "
+        "defaults : ",
         "Defaults : ",
         "default : ",
         "Default : ",
@@ -116,8 +119,8 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
     default = ""
     for pattern in patterns:
         if pattern in line:
-            default = line.split(pattern)[-1].strip()
-            line = line.split(pattern)[0].strip()
+            default = line.rsplit(pattern, maxsplit=1)[-1].strip()
+            line = line.split(pattern, maxsplit=1)[0].strip()
             break
     # Reverse lines merging
     lines = line.split("\n")

@@ -1,4 +1,5 @@
 """Parser for Numpy style docstrings."""
+
 import re
 from typing import Dict, List
 
@@ -17,7 +18,7 @@ def parse_params(lines: List[str], section_name: str = "param") -> List[dict]:
     """
     # Skip the 2 first lines
     lines = lines[2:]
-    params_list = []
+    params_list: List[dict] = []
     for line in lines:
         if not line.startswith(" ") and line.strip() != "":
             split_dots = re.split(r":\s|\n", line, maxsplit=1)
@@ -32,7 +33,7 @@ def parse_params(lines: List[str], section_name: str = "param") -> List[dict]:
                     type_p = type_p[:-8].strip()
                     optional = True
                 else:
-                    type_p = type_p
+                    type_p = type_p.strip()
                     optional = False
             params_list.append({})
             params_list[-1]["name"] = param_name
@@ -84,7 +85,8 @@ def parse_wild_sections_ranges(lines: List[str]) -> Dict:
     ]
     known_sections += [f"{name}s" for name in known_sections]  # add 's'
     for i, line in enumerate(lines):
-        if (not line.startswith(" ")
+        if (
+            not line.startswith(" ")
             and len(lines) > i + 1
             and lines[i + 1].startswith("---")
         ):

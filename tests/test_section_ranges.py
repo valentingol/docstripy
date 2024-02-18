@@ -1,4 +1,5 @@
 """Test docstring section parser."""
+
 import pytest_check as check
 
 from npdocify.parse_doc.section_ranges import parse_sections_ranges
@@ -27,7 +28,7 @@ def test_parse_section_ranges() -> None:
         "_returns": [5, 8],
         "_raises": [15, 17],
         "Examples": [8, 12],
-        "Notes":  [12, 15],
+        "Notes": [12, 15],
     }
     check.equal(ranges, expected_ranges)
 

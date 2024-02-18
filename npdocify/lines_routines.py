@@ -1,4 +1,5 @@
 """Routines on code source lines."""
+
 from typing import List, Tuple
 
 
@@ -42,7 +43,7 @@ def find_indent(lines: List[str]) -> int:
     if len([line for line in lines if line not in ("", "\n")]) == 0:
         return 0
     return min(
-        [len(line) - len(line.lstrip()) for line in lines if line not in ("", "\n")]
+        len(line) - len(line.lstrip()) for line in lines if line not in ("", "\n")
     )
 
 
@@ -100,7 +101,7 @@ def clean_empty(lines: List[str]) -> List[str]:
     return new_lines
 
 
-def clean_leading_empty(lines: List[str]):
+def clean_leading_empty(lines: List[str]) -> List[str]:
     """Clean leading empty lines."""
     new_lines = lines.copy()
     while len(new_lines) > 0 and new_lines[0].strip(" ") == "\n":
@@ -108,7 +109,7 @@ def clean_leading_empty(lines: List[str]):
     return new_lines
 
 
-def clean_trailing_empty(lines: List[str]):
+def clean_trailing_empty(lines: List[str]) -> List[str]:
     """Clean trailing empty lines."""
     new_lines = lines.copy()
     while len(new_lines) > 0 and new_lines[-1].strip(" ") == "\n":
@@ -116,7 +117,7 @@ def clean_trailing_empty(lines: List[str]):
     return new_lines
 
 
-def remove_quotes(lines: List[str]):
+def remove_quotes(lines: List[str]) -> Tuple[List[str], bool]:
     """Remove triple quotes and return whether the docstring is escaped or not."""
     escaped = False
     new_lines = lines.copy()
@@ -136,7 +137,7 @@ def remove_quotes(lines: List[str]):
     return new_lines, escaped
 
 
-def clean_trailing_spaces(lines: List[str]):
+def clean_trailing_spaces(lines: List[str]) -> List[str]:
     """Clean trailing spaces."""
     new_lines = []
     for line in lines:
