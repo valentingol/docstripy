@@ -2,7 +2,7 @@
 requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
 
 [project]
-name = "npdocify"
+name = "docstripy"
 authors = [{ name = "Valentin Goldite", email = "valentin.goldite@gmail.com" }]
 description = """Merge your config files and set parameters from the command line in a simple way."""
 requires-python = ">=3.7"
@@ -11,24 +11,24 @@ classifiers = ["Programming Language :: Python :: 3"]
 dynamic = ["readme", "dependencies", "version"]
 
 [project.scripts]
-npdocify = "npdocify.main:main"
+docstripy = "docstripy.main:main"
 
 [tool.setuptools]
-packages = ["npdocify"]
+packages = ["docstripy"]
 license-files = ['LICEN[CS]E*', 'COPYING*', 'NOTICE*', 'AUTHORS*']
 
 [tool.setuptools_scm]
-write_to = "npdocify/_version.py"
+write_to = "docstripy/_version.py"
 
 [project.urls]
-Source = "https://github.com/valentingol/npdocify"
+Source = "https://github.com/valentingol/docstripy"
 
 [tool.setuptools.dynamic]
 readme = { file = ["README.md"], content-type = "text/markdown" }
 dependencies = { file = ["requirements.txt"] }
 
 [tool.coverage.run]
-source = ["npdocify"]
+source = ["docstripy"]
 
 [tool.coverage.report]
 exclude_lines = ["if __name__ == '__main__':", "    main()"]

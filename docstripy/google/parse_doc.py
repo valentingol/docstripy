@@ -3,7 +3,7 @@
 import re
 from typing import Dict, List
 
-from npdocify.lines_routines import find_prefix, remove_indent
+from docstripy.lines_routines import find_prefix, remove_indent
 
 
 def parse_params(lines: List[str], section_name: str) -> List[dict]:

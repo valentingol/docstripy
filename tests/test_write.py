@@ -3,7 +3,7 @@
 import pytest
 import pytest_check as check
 
-from npdocify.difference import Diff
+from docstripy.difference import Diff
 
 
 def test_diff() -> None:

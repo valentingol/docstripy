@@ -3,10 +3,10 @@
 from functools import partial
 from typing import List, Tuple
 
-from npdocify.google.parse_doc import parse_params as parse_params_google
-from npdocify.lines_routines import add_eol, clean_trailing_empty
-from npdocify.numpy.parse_doc import parse_params as parse_params_numpy
-from npdocify.rest.parse_doc import parse_params as parse_params_rest
+from docstripy.google.parse_doc import parse_params as parse_params_google
+from docstripy.lines_routines import add_eol, clean_trailing_empty
+from docstripy.numpy.parse_doc import parse_params as parse_params_numpy
+from docstripy.rest.parse_doc import parse_params as parse_params_rest
 
 
 def parse_params_all(
@@ -70,9 +70,8 @@ def parse_params_all(
         "google": parse_params_google,
         "numpy": parse_params_numpy,
     }
-    params_list = parse_funcs[style](
-        lines=lines, section_name=section_name
-    )  # type: ignore
+    parse_func = parse_funcs[style]
+    params_list = parse_func(lines=lines, section_name=section_name)  # type: ignore
 
     for param_dict in params_list:
         description = param_dict["description"]

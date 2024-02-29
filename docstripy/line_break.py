@@ -2,7 +2,7 @@
 
 from typing import List
 
-from npdocify.lines_routines import add_eol, clean_trailing_spaces, remove_eol
+from docstripy.lines_routines import add_eol, clean_trailing_spaces, remove_eol
 
 
 def line_break(lines: List[str], max_line_length: int) -> List[str]:

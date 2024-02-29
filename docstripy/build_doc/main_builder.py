@@ -2,11 +2,11 @@
 
 from typing import List
 
-from npdocify.build_doc.preprocessing import preprocess_title_build
-from npdocify.google.build_doc import build_doc_google
-from npdocify.line_break import line_break
-from npdocify.numpy.build_doc import build_doc_numpy
-from npdocify.rest.build_doc import build_doc_rest
+from docstripy.build_doc.preprocessing import preprocess_title_build
+from docstripy.google.build_doc import build_doc_google
+from docstripy.line_break import line_break
+from docstripy.numpy.build_doc import build_doc_numpy
+from docstripy.rest.build_doc import build_doc_rest
 
 
 def build_docstring(

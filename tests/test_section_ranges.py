@@ -2,7 +2,7 @@
 
 import pytest_check as check
 
-from npdocify.parse_doc.section_ranges import parse_sections_ranges
+from docstripy.parse_doc.section_ranges import parse_sections_ranges
 
 
 def test_parse_section_ranges() -> None:

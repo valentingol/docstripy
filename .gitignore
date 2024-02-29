@@ -20,7 +20,7 @@ venv
 tests/tmp
 run.py
 # Setuptools SCM
-npdocify/_version.py
+docstripy/_version.py
 # Docs
 docs/_build
 docs/build

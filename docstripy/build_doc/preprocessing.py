@@ -2,7 +2,7 @@
 
 from typing import List
 
-from npdocify.line_break import line_break
+from docstripy.line_break import line_break
 
 
 def preprocess_title_build(lines: List[str], max_len: int) -> List[str]:

@@ -2,7 +2,7 @@
 
 import pytest_check as check
 
-from npdocify.parse_doc.main_parser import parse_all
+from docstripy.parse_doc.main_parser import parse_all
 
 
 def test_parse_section() -> None:

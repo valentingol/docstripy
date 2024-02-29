@@ -2,17 +2,17 @@
 
 from typing import List, Tuple
 
-from npdocify.file_parser import parse_ranges
-from npdocify.lines_routines import (
+from docstripy.file_parser import parse_ranges
+from docstripy.lines_routines import (
     clean_leading_empty,
     clean_trailing_empty,
     remove_indent,
     remove_quotes,
 )
-from npdocify.parse_doc.parse_def import parse_def
-from npdocify.parse_doc.parse_params import parse_params_all
-from npdocify.parse_doc.postprocessing import postprocess_title_parse
-from npdocify.parse_doc.section_ranges import parse_sections_ranges
+from docstripy.parse_doc.parse_def import parse_def
+from docstripy.parse_doc.parse_params import parse_params_all
+from docstripy.parse_doc.postprocessing import postprocess_title_parse
+from docstripy.parse_doc.section_ranges import parse_sections_ranges
 
 
 def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict]]:

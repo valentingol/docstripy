@@ -33,7 +33,7 @@ check_output "PEP8 checks"
 # check_output "Integration tests"
 
 echo "************** Unit tests **************"
-pytest --cov-report term-missing --cov=./npdocify tests/
+pytest --cov-report term-missing --cov=./docstripy tests/
 check_output "Unit tests"
 
 printf "\n${GREEN}${BOLD}All checks pass${NORMAL}${WHITE}\n\n"

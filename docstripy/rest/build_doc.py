@@ -2,8 +2,8 @@
 
 from typing import Any, Dict, List
 
-from npdocify.line_break import line_break
-from npdocify.lines_routines import add_indent, clean_trailing_spaces
+from docstripy.line_break import line_break
+from docstripy.lines_routines import add_indent, clean_trailing_spaces
 
 
 def build_doc_rest(

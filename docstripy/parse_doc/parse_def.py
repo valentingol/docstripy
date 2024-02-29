@@ -2,7 +2,7 @@
 
 from typing import List
 
-from npdocify.lines_routines import clean_comment
+from docstripy.lines_routines import clean_comment
 
 
 def parse_def(lines: List[str]) -> tuple[str, List[str], List[dict]]:

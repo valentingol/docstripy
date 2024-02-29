@@ -1,20 +1,20 @@
 """Parse sections."""
 from typing import Dict, List, Tuple
 
-from npdocify.google.parse_doc import (
+from docstripy.google.parse_doc import (
     parse_sections_ranges as parse_google_sections_ranges,
 )
-from npdocify.google.parse_doc import (
+from docstripy.google.parse_doc import (
     parse_wild_sections_ranges as parse_wild_sections_google_ranges,
 )
-from npdocify.lines_routines import remove_indent
-from npdocify.numpy.parse_doc import (
+from docstripy.lines_routines import remove_indent
+from docstripy.numpy.parse_doc import (
     parse_sections_ranges as parse_numpy_sections_ranges,
 )
-from npdocify.numpy.parse_doc import (
+from docstripy.numpy.parse_doc import (
     parse_wild_sections_ranges as parse_wild_sections_numpy_ranges,
 )
-from npdocify.rest.parse_doc import parse_sections_ranges as parse_rest_sections_ranges
+from docstripy.rest.parse_doc import parse_sections_ranges as parse_rest_sections_ranges
 
 
 def parse_sections_ranges(lines: List[str]) -> Tuple[Dict, str]:

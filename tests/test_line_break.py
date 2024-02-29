@@ -2,7 +2,7 @@
 
 import pytest_check as check
 
-from npdocify.line_break import line_break
+from docstripy.line_break import line_break
 
 
 def test_line_break() -> None:

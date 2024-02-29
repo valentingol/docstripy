@@ -1,12 +1,12 @@
-# Contributing to NpDocify
+# Contributing to Docstripy
 
-Everyone can contribute to NpDocify, and we value everyone’s contributions.
+Everyone can contribute to Docstripy, and we value everyone’s contributions.
 There are several ways to contribute, including:
 
-- Raising [issue](https://github.com/valentingol/npdocify/issues)
+- Raising [issue](https://github.com/valentingol/docstripy/issues)
   on the Github repository
 
-- Proposing [Pull requests](https://github.com/valentingol/npdocify/pulls)
+- Proposing [Pull requests](https://github.com/valentingol/docstripy/pulls)
   to the Github repository
 
 - Contact me by email (valentin.goldite@gmail.com)

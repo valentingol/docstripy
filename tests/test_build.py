@@ -3,7 +3,7 @@
 import pytest
 import pytest_check as check
 
-from npdocify.build_doc.main_builder import build_docstring
+from docstripy.build_doc.main_builder import build_docstring
 
 
 @pytest.fixture()

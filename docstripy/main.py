@@ -3,10 +3,10 @@
 import argparse
 import os
 
-from npdocify.build_doc.main_builder import build_docstring
-from npdocify.difference import Diff
-from npdocify.lines_routines import add_indent, find_indent
-from npdocify.parse_doc.main_parser import parse_docstring
+from docstripy.build_doc.main_builder import build_docstring
+from docstripy.difference import Diff
+from docstripy.lines_routines import add_indent, find_indent
+from docstripy.parse_doc.main_parser import parse_docstring
 
 
 def write_file(
@@ -77,12 +77,12 @@ def write_files_recursive(
     if error_paths:
         err_message = "Error when parsing file(s):\n"
         err_message += "\n".join(error_paths)
-        err_message += "\nRun `npdocify` on individual files to get lines error."
+        err_message += "\nRun `docstripy` on individual files to get lines error."
         print(err_message)
 
 
 def parse_args() -> dict:
-    """Command line parser for npdocify."""
+    """Command line parser for docstripy."""
     parser = argparse.ArgumentParser()
     parser.add_argument("path", help="File path or root directory path.", type=str)
     parser.add_argument(

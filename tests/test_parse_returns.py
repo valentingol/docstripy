@@ -4,8 +4,8 @@ from typing import List
 
 import pytest_check as check
 
-from npdocify.lines_routines import remove_indent
-from npdocify.parse_doc.parse_params import parse_params_all
+from docstripy.lines_routines import remove_indent
+from docstripy.parse_doc.parse_params import parse_params_all
 
 
 def test_returns() -> None:
