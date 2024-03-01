@@ -110,6 +110,7 @@ def parse_all(lines_docstr: List[str]) -> dict:
             )
             if section:
                 sections[section_unders] = section
+
     # Manage wild sections : remove header
     for section_name in sections:
         if not section_name.startswith("_"):
@@ -137,9 +138,8 @@ def merge_docstr_def(
         sections_docstr["_title"]
     ):
         sections_docstr["_title"] = [" ".join(fn_name.split("_")).capitalize() + ".\n"]
-    if "_parameters" not in sections_docstr:
-        sections_docstr["_parameters"] = args
-    else:
+    if "_parameters" in sections_docstr and sections_docstr["_parameters"]:
+        # NOTE: only add/update param info if already any is provided in the doc
         for param in sections_docstr["_parameters"]:
             for arg in args:
                 if param["name"] in (arg["name"], arg["name"].lstrip("*")):
@@ -154,9 +154,12 @@ def merge_docstr_def(
                 param["name"].lstrip("*") for param in sections_docstr["_parameters"]
             ]:
                 sections_docstr["_parameters"].append(arg)
-    if "_returns" not in sections_docstr or not sections_docstr["_returns"]:
-        sections_docstr["_returns"] = [{"name": "", "type": rtype} for rtype in rtypes]
-    elif len(rtypes) == len(sections_docstr["_returns"]):
+    if (
+        "_returns" in sections_docstr
+        and sections_docstr["_returns"]
+        and len(rtypes) == len(sections_docstr["_returns"])
+    ):
+        # NOTE: only add/update return info if already any is provided in the doc
         for i, return_arg in enumerate(sections_docstr["_returns"]):
             if "type" not in return_arg or not return_arg["type"]:
                 return_arg["type"] = rtypes[i]
