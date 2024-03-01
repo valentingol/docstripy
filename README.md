@@ -1,6 +1,6 @@
 # Docstripy - Convert any docstring to any format docstring
 
-Transform your python docstrings with the format you want :sparkles:
+Transform your python docstrings to the format you want :sparkles:
 
 Support Nympydoc, Google and ReStructuredText as output styles.
 The input style should be either Numpy, Google, ReST or even a mix of both.
@@ -14,7 +14,6 @@ The input style should be either Numpy, Google, ReST or even a mix of both.
 
 [![Ruff](https://github.com/valentingol/docstripy/actions/workflows/ruff.yaml/badge.svg)](https://github.com/valentingol/docstripy/actions/workflows/ruff.yaml)
 [![Flake8](https://github.com/valentingol/docstripy/actions/workflows/flake.yaml/badge.svg)](https://github.com/valentingol/docstripy/actions/workflows/flake.yaml)
-[![Pydocstyle](https://github.com/valentingol/docstripy/actions/workflows/pydocstyle.yaml/badge.svg)](https://github.com/valentingol/docstripy/actions/workflows/pydocstyle.yaml)
 [![MyPy](https://github.com/valentingol/docstripy/actions/workflows/mypy.yaml/badge.svg)](https://github.com/valentingol/docstripy/actions/workflows/mypy.yaml)
 [![PyLint](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/valentingol/5816178f37cee2c013f2e656666c898a/raw/npdocify_pylint.json)](https://github.com/valentingol/docstripy/actions/workflows/pylint.yaml)
 
