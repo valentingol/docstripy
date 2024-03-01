@@ -79,9 +79,9 @@ def test_build_docstring(sections_dict: dict) -> None:
     with open("tests/files/docstr1.txt", "r", encoding="utf-8") as file:
         docstrings = file.readlines()
     expected_docstrs = {
-        "rest": docstrings[:32],
-        "google": docstrings[33:69],
-        "numpy": docstrings[70:117],
+        "rest": docstrings[:31],
+        "google": docstrings[32:68],
+        "numpy": docstrings[69:116],
     }
     docstr_config: dict = {"max_len": 76, "indent": 4}
     for style, expected_docstr in expected_docstrs.items():
@@ -89,10 +89,9 @@ def test_build_docstring(sections_dict: dict) -> None:
         docstring = build_docstring(
             sections=sections_dict, docstr_config=docstr_config, indent_base=0
         )
-        for i, (line, expected_line) in enumerate(zip(docstring, expected_docstr)):
-            check.equal(
-                line,
-                expected_line,
-                f"\nStyle {style}\nExpected:\n{expected_line}"
-                f"\nGot:\n{line}\n(index {i})",
-            )
+        check.equal(
+            docstring,
+            expected_docstr,
+            f"\n**Style {style}**\n**Expected:**\n{''.join(expected_docstr)}"
+            f"\n**Got:**\n{''.join(docstring)}",
+        )
