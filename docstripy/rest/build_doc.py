@@ -33,7 +33,11 @@ def build_doc_rest(
         if not section_name.startswith("_"):
             docstring.append("\n")
             docstring.append(section_name + ":\n")
-            docstring.extend(add_indent(sections_dict[section_name], indent))
+            section_content = line_break(
+                sections_dict[section_name],
+                max_line_length=max_len - indent,
+            )
+            docstring.extend(add_indent(section_content, indent))
     docstring.append('"""\n')
     docstring = clean_trailing_spaces(docstring)
     return docstring

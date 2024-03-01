@@ -37,7 +37,12 @@ def build_doc_numpy(
             docstring.append("\n")
             docstring.append(section_name + "\n")
             docstring.append("-" * len(section_name) + "\n")
-            docstring.extend(sections_dict[section_name])
+            docstring.extend(
+                line_break(
+                    sections_dict[section_name],
+                    max_line_length=max_len,
+                )
+            )
     docstring.append('"""\n')
     docstring = clean_trailing_spaces(docstring)
     return docstring
@@ -61,7 +66,6 @@ def build_section_params_numpy(
                 first_line += ", optional"
             if "name" not in param_dict:
                 first_line += " : "
-        param_docstring.append(first_line + "\n")
         if "description" in param_dict and param_dict["description"]:
             param_docstring.extend(param_dict["description"])
         if "default" in param_dict and param_dict["default"]:
@@ -71,7 +75,9 @@ def build_section_params_numpy(
             else:
                 param_docstring[-1] = param_docstring[-1].rstrip("\n")
                 param_docstring[-1] += " By default, " + param_dict["default"] + ".\n"
-        param_docstring = line_break(param_docstring, max_len - indent)
+        param_docstring = [first_line + "\n"] + line_break(
+            param_docstring, max_len - indent
+        )
         for i, line in enumerate(param_docstring):
             if i > 0:
                 param_docstring[i] = " " * indent + line

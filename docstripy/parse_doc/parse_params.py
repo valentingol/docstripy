@@ -86,6 +86,7 @@ def parse_params_all(
         # Remove optional info
         for param_dict in params_list:
             del param_dict["optional"]
+
     return params_list
 
 
@@ -101,8 +102,8 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
         "default to ",
         "Defaults to ",
         "Default to ",
-        "by default",
-        "By default",
+        "by default ",
+        "By default ",
         "defaults : ",
         "Defaults : ",
         "default : ",
@@ -118,8 +119,12 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
     default = ""
     for pattern in patterns:
         if pattern in line:
-            default = line.rsplit(pattern, maxsplit=1)[-1].strip()
-            line = line.split(pattern, maxsplit=1)[0].strip()
+            default_split1, default_split_2 = line.rsplit(pattern, maxsplit=1)
+            default = default_split_2.split("\n")[0].split(".")[0].strip()
+            if default + "." in default_split_2:
+                line = default_split1 + default_split_2.replace(default + ".", "")
+            else:
+                line = default_split1 + default_split_2.replace(default, "")
             break
     # Reverse lines merging
     lines = line.split("\n")
