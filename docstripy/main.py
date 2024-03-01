@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import os.path as osp
 
 from docstripy.build_doc.main_builder import build_docstring
 from docstripy.difference import Diff
@@ -10,14 +11,14 @@ from docstripy.parse_doc.main_parser import parse_docstring
 
 
 def write_file(
-    path: str,
+    in_path: str,
     out_path: str,
     *,
     overwrite: bool,
     docstr_config: dict,
 ) -> None:
     """Write new docstrings on a file."""
-    with open(path, encoding="utf-8") as file:
+    with open(in_path, encoding="utf-8") as file:
         file_lines = file.readlines()
     try:
         range_docstrs, sections_list = parse_docstring(file_lines)
@@ -42,15 +43,15 @@ def write_file(
     # Write in file
     diff = Diff(range_docstrs, new_lines)
     file_new_lines = diff.apply_diff(file_lines)
-    out_path = path if overwrite else out_path
-    if os.path.dirname(out_path):
-        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    out_path = in_path if overwrite else out_path
+    if osp.dirname(out_path):
+        os.makedirs(osp.dirname(out_path), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as file:
         file.writelines(file_new_lines)
 
 
 def write_files_recursive(
-    path: str,
+    in_path: str,
     out_path: str,
     *,
     overwrite: bool,
@@ -58,16 +59,15 @@ def write_files_recursive(
 ) -> None:
     """Write new docstrings on all files in a folder."""
     error_paths = []
-    for dir_path, _, file_names in os.walk(path):
+    for dir_path, _, file_names in os.walk(in_path):
         for file_name in file_names:
             if file_name.endswith(".py"):
-                file_path = os.path.join(dir_path, file_name)
-                path_clean = path.rstrip(os.sep)
-                out_path_clean = out_path.rstrip(os.sep)
-                file_out_path = file_path.replace(path_clean, out_path_clean)
+                file_path = osp.join(dir_path, file_name)
+                rel_path = osp.relpath(file_path, in_path)
+                file_out_path = osp.join(out_path, rel_path)
                 try:
                     write_file(
-                        path=file_path,
+                        in_path=file_path,
                         out_path=file_out_path,
                         overwrite=overwrite,
                         docstr_config=docstr_config,
@@ -84,7 +84,7 @@ def write_files_recursive(
 def parse_args() -> dict:
     """Command line parser for docstripy."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("path", help="File path or root directory path.", type=str)
+    parser.add_argument("in_path", help="File path or root directory path.", type=str)
     parser.add_argument(
         "-s", "--style", help="Style of the docstring", type=str, default="numpy"
     )
@@ -127,7 +127,7 @@ def parse_args() -> dict:
             "or overwrite file(s) with `--overwrite`/`-w` instead."
         )
     return {
-        "path": args.path,
+        "in_path": args.in_path,
         "out_path": args.out_path,
         "docstr_config": docstr_config,
         "overwrite": args.overwrite,
@@ -137,7 +137,7 @@ def parse_args() -> dict:
 def main() -> None:
     """Rewrite file(s) docstrings main function."""
     cli_args = parse_args()
-    if os.path.isfile(cli_args["path"]):
+    if osp.isfile(cli_args["in_path"]):
         write_file(**cli_args)
     write_files_recursive(**cli_args)
 
