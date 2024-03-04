@@ -46,3 +46,7 @@ def square(n):
     Use \escaped characters.
     """
     return n * n
+
+
+def empty_function() -> None:  # noqa: D103
+    pass

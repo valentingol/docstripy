@@ -15,18 +15,42 @@ from docstripy.parse_doc.postprocessing import postprocess_title_parse
 from docstripy.parse_doc.section_ranges import parse_sections_ranges
 
 
-def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict]]:
-    """Docstring parser."""
+def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List[bool]]:
+    """Docstring parser.
+
+    Parameters
+    ----------
+    lines : List[str]
+        Lines of the file.
+
+    Returns
+    -------
+    ranges_docstr : List[List[int]]
+        Ranges of the docstrings.
+    sections_list : List[Dict]
+        Parsed sections.
+    to_insert : List[bool]
+        Whether to insert a new docstring or overwrite the existing one.
+    """
     ranges_docstr, ranges_def = parse_ranges(lines)
     sections_list = []
-    for range_docstr in ranges_docstr:
-        range_def = find_range_matching(range_docstr, ranges_def)
-        lines_docstr = lines[range_docstr[0] : range_docstr[1]]
+    to_insert = []
+    for range_def in ranges_def:
+        range_docstr = find_range_matching(range_def, ranges_docstr)
         lines_def = lines[range_def[0] : range_def[1]]
+        if range_docstr == [-1, -1]:
+            # No docstring: add one
+            lines_docstr = ["\n"]
+            ranges_docstr.append([range_def[0] + 1, range_def[0] + 2])
+            to_insert.append(True)
+        else:
+            lines_docstr = lines[range_docstr[0] : range_docstr[1]]
+            to_insert.append(False)
+
         sections = parse_all(lines_docstr)
         sections = merge_docstr_def(sections, lines_def)
         sections_list.append(sections)
-    return ranges_docstr, sections_list
+    return ranges_docstr, sections_list, to_insert
 
 
 def parse_all(lines_docstr: List[str]) -> dict:
@@ -134,6 +158,7 @@ def merge_docstr_def(
     if not lines_def:
         return sections_docstr
     fn_name, rtypes, args = parse_def(lines_def)
+
     if "_title" not in sections_docstr or not clean_leading_empty(
         sections_docstr["_title"]
     ):
@@ -167,11 +192,11 @@ def merge_docstr_def(
 
 
 def find_range_matching(
-    range_docstr: List[int],
-    ranges_def: List[List[int]],
+    range_def: List[int],
+    ranges_docstr: List[List[int]],
 ) -> List[int]:
     """Find the range in ranges_def that matches range_docstr."""
-    for range_def in ranges_def:
+    for range_docstr in ranges_docstr:
         if 0 <= range_docstr[0] - range_def[1] <= 1:
-            return range_def
+            return range_docstr
     return [-1, -1]

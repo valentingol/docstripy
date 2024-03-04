@@ -12,11 +12,11 @@ def test_returns() -> None:
     """Test return parsing."""
     with open("tests/files/test3.py", "r", encoding="utf-8") as file:
         lines = file.readlines()
-    rest_doc1 = remove_indent(lines[29:31])
+    rest_doc1 = remove_indent(lines[30:32])
     returns_rest = parse_params_all(rest_doc1, style="rest", section_name="return")
-    np_doc1 = remove_indent(lines[68:72])
+    np_doc1 = remove_indent(lines[69:73])
     returns_np = parse_params_all(np_doc1, style="numpy", section_name="return")
-    google_doc1 = remove_indent(lines[102:104])
+    google_doc1 = remove_indent(lines[103:105])
     returns_google = parse_params_all(
         google_doc1, style="google", section_name="return"
     )

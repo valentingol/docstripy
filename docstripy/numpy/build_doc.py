@@ -3,7 +3,7 @@
 from typing import Any, Dict, List
 
 from docstripy.line_break import line_break
-from docstripy.lines_routines import clean_trailing_spaces
+from docstripy.lines_routines import clean_trailing_empty, clean_trailing_spaces
 
 
 def build_doc_numpy(
@@ -22,16 +22,22 @@ def build_doc_numpy(
         "_attributes",
     ):
         if section_name in sections_dict and sections_dict[section_name]:
+            docstr_sec = []
             header = section_name[1:].capitalize()
-            docstring.append("\n")
-            docstring.append(header + "\n")
-            docstring.append("-" * len(header) + "\n")
+            docstr_sec.append("\n")
+            docstr_sec.append(header + "\n")
+            docstr_sec.append("-" * len(header) + "\n")
             doc_params = build_section_params_numpy(
                 sections_dict[section_name],
                 max_len=max_len,
                 indent=indent,
             )
-            docstring.extend(doc_params)
+            if clean_trailing_empty(doc_params):
+                docstr_sec.extend(doc_params)
+                docstring.extend(docstr_sec)
+            else:
+                # Error if empty sections
+                raise ValueError(f"Empty section found (section {section_name[1:]}).")
     for section_name in sections_dict:
         if not section_name.startswith("_"):
             docstring.append("\n")
@@ -64,12 +70,14 @@ def build_section_params_numpy(
             first_line += param_dict["type"]
             if "optional" in param_dict and param_dict["optional"]:
                 first_line += ", optional"
-            if "name" not in param_dict:
-                first_line += " : "
         if "description" in param_dict and param_dict["description"]:
             param_docstring.extend(param_dict["description"])
         if "default" in param_dict and param_dict["default"]:
-            if "description" not in param_dict or len(param_docstring[-1]) > 50:
+            if (
+                not param_docstring
+                or "description" not in param_dict
+                or len(param_docstring[-1]) > max_len * 0.75
+            ):
                 line = "By default, " + param_dict["default"] + ".\n"
                 param_docstring.append(line)
             else:

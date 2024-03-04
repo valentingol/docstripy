@@ -5,7 +5,7 @@ import os
 import os.path as osp
 
 from docstripy.build_doc.main_builder import build_docstring
-from docstripy.difference import Diff
+from docstripy.difference import apply_diff
 from docstripy.lines_routines import add_indent, find_indent
 from docstripy.parse_doc.main_parser import parse_docstring
 
@@ -21,8 +21,16 @@ def write_file(
     with open(in_path, encoding="utf-8") as file:
         file_lines = file.readlines()
     try:
-        range_docstrs, sections_list = parse_docstring(file_lines)
-    except (IndexError, ValueError) as err:
+        range_docstrs, sections_list, to_insert = parse_docstring(file_lines)
+    except (
+        IndexError,
+        ValueError,
+        KeyError,
+        ArithmeticError,
+        IndentationError,
+        NameError,
+        ValueError,
+    ) as err:
         raise ValueError("Error found during docstring parsing.") from err
     new_lines = []
     for range_doc, sections in zip(range_docstrs, sections_list):
@@ -33,16 +41,28 @@ def write_file(
                 docstr_config=docstr_config,
                 indent_base=indent_base,
             )
-        except (IndexError, ValueError) as err:
+        except (
+            IndexError,
+            ValueError,
+            KeyError,
+            ArithmeticError,
+            IndentationError,
+            NameError,
+            ValueError,
+        ) as err:
             raise ValueError(
                 f"Error found at lines {range_doc[0]}-{range_doc[1]} "
-                "during docstring building."
+                "during docstring building. Please check above error."
             ) from err
         docstring = add_indent(docstring, indent_base)
         new_lines.append("".join(docstring))
     # Write in file
-    diff = Diff(range_docstrs, new_lines)
-    file_new_lines = diff.apply_diff(file_lines)
+    file_new_lines = apply_diff(
+        ranges=range_docstrs,
+        lines=new_lines,
+        old_lines=file_lines,
+        to_insert=to_insert,
+    )
     out_path = in_path if overwrite else out_path
     if osp.dirname(out_path):
         os.makedirs(osp.dirname(out_path), exist_ok=True)
@@ -77,7 +97,9 @@ def write_files_recursive(
     if error_paths:
         err_message = "Error when parsing file(s):\n"
         err_message += "\n".join(error_paths)
-        err_message += "\nRun `docstripy` on individual files to get lines error."
+        err_message += (
+            "\nRun `docstripy` on those files individually to get error lines."
+        )
         print(err_message)
 
 
