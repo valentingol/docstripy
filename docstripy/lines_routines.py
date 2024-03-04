@@ -12,15 +12,6 @@ def add_eol(lines: List[str]) -> List[str]:
     return new_lines
 
 
-def remove_eol(lines: List[str]) -> List[str]:
-    """Remove end of lines."""
-    new_lines = lines.copy()
-    for i, line in enumerate(lines):
-        if line.endswith("\n"):
-            new_lines[i] = line[:-1]
-    return new_lines
-
-
 def remove_indent(lines: List[str]) -> List[str]:
     """Remove indent from lines."""
     indent = find_indent(lines)
@@ -90,15 +81,6 @@ def find_prefix(
                     break
             break
     return start, end
-
-
-def clean_empty(lines: List[str]) -> List[str]:
-    """Clean all empty lines."""
-    new_lines = lines.copy()
-    for line in lines:
-        if line.strip() not in ("", "\n"):
-            new_lines.append(line)
-    return new_lines
 
 
 def clean_leading_empty(lines: List[str]) -> List[str]:
