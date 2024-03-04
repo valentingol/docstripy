@@ -31,9 +31,9 @@ def line_break(
     new_lines[0] = num_add_char * " " + new_lines[0]  # Will be removed at the end
     flat_line = "".join(new_lines)
     list_flat = []
-    for i in range(len(flat_line)):
-        if flat_line[i] != "\n":
-            list_flat.append(flat_line[i])
+    for i, char in enumerate(flat_line):
+        if char != "\n":
+            list_flat.append(char)
         else:
             if i > 0 and flat_line[i - 1] == "\n":
                 list_flat.append("\n")
@@ -48,9 +48,10 @@ def line_break(
                 list_flat.append("\n")
     new_lines = "".join(list_flat).split("\n")
     sentences = [line.split(". ") for line in new_lines]
-    for part in sentences:
-        for i in range(len(part)):
-            part[i] += "." if i < len(part) - 1 else ""
+    for paragraph in sentences:
+        for i, line_par in enumerate(paragraph):
+            line_par += "." if i < len(paragraph) - 1 else ""
+            paragraph[i] = line_par
     sentences = [break_sentences(sentence, max_line_length) for sentence in sentences]
     sentences = [add_eol(sentence) for sentence in sentences]
     new_lines = [line for sublist in sentences for line in sublist]
