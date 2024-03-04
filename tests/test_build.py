@@ -95,3 +95,69 @@ def test_build_docstring(sections_dict: dict) -> None:
             f"\n**Style {style}**\n**Expected:**\n{''.join(expected_docstr)}"
             f"\n**Got:**\n{''.join(docstring)}",
         )
+
+
+def test_build_special() -> None:
+    """Test build doc with special cases."""
+    sec_dict = {
+        "_escaped": False,
+        "_title": ["This is a title.\n", "\n", "This is a subtitle.\n"],
+        "_parameters": [
+            {
+                "name": "param1",
+                "type": "int",
+                "optional": True,
+                "default": "0",
+            }
+        ],
+        "_returns": [
+            {
+                "name": "",
+                "type": "str",
+            },
+        ],
+    }
+    with open("tests/files/docstr2.txt", encoding="utf-8") as txt_file:
+        file_lines = txt_file.readlines()
+    docstr_config = {"max_len": 76, "indent": 4, "style": "rest"}
+    docstring_rest = build_docstring(
+        sections=sec_dict, docstr_config=docstr_config, indent_base=0
+    )
+    check.equal(docstring_rest, file_lines[0:7])
+    docstr_config["style"] = "google"
+    docstring_google = build_docstring(
+        sections=sec_dict, docstr_config=docstr_config, indent_base=0
+    )
+    check.equal(docstring_google, file_lines[7:17])
+    docstr_config["style"] = "numpy"
+    docstring_numpy = build_docstring(
+        sections=sec_dict, docstr_config=docstr_config, indent_base=0
+    )
+    check.equal(docstring_numpy, file_lines[17:30])
+    sec_dict = {
+        "_escaped": False,
+        "_title": ["This is a short title.\n"],
+    }
+    docstring = build_docstring(
+        sections=sec_dict, docstr_config=docstr_config, indent_base=0
+    )
+    check.equal(docstring, ['"""This is a short title."""\n'])
+    sec_dict = {
+        "_escaped": False,
+        "_title": [
+            "This is a very very very long title. Lorem ipsum dolor "
+            "sit amet, consectetur adipiscing elit.\n"
+        ],
+    }
+    docstr_config = {"max_len": 50, "indent": 4, "style": "numpy"}
+    docstring = build_docstring(
+        sections=sec_dict, docstr_config=docstr_config, indent_base=0
+    )
+    check.equal(
+        docstring,
+        [
+            '"""This is a very very very long title. Lorem ipsum\n',
+            "dolor sit amet, consectetur adipiscing elit.\n",
+            '"""\n',
+        ],
+    )
