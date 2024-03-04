@@ -3,6 +3,7 @@
 
 Contains some functions for testing the parser.
 """
+
 from typing import Dict, List
 
 
