@@ -3,7 +3,11 @@
 from typing import Any, Dict, List
 
 from docstripy.line_break import line_break
-from docstripy.lines_routines import add_indent, clean_trailing_spaces
+from docstripy.lines_routines import (
+    add_indent,
+    clean_trailing_empty,
+    clean_trailing_spaces,
+)
 
 
 def build_doc_rest(
@@ -28,7 +32,11 @@ def build_doc_rest(
                 indent=indent,
                 section_name=section_name,
             )
-            docstring.extend(doc_params)
+            if clean_trailing_empty(doc_params):
+                docstring.extend(doc_params)
+            else:
+                # Error if empty sections
+                raise ValueError(f"Empty section found (section {section_name[1:]}).")
     for section_name in sections_dict:
         if not section_name.startswith("_"):
             docstring.append("\n")
@@ -56,17 +64,20 @@ def build_section_params_rest(
         "_raises": ("raises", ""),
         "_returns": ("return", "rtype"),
         "_attributes": ("atribute", "type"),
+        "_yields": ("yield", "rtype"),
     }
     keyword, type_keyword = name_to_keyword[section_name]
     for param_dict in param_dicts:
         param_docstring = []
         first_line = ""
-        if "name" in param_dict or "description" in param_dict:
+        if ("name" in param_dict and param_dict["name"]) or (
+            "description" in param_dict and param_dict["description"]
+        ):
             if "name" in param_dict and param_dict["name"]:
                 first_line = f":{keyword} {param_dict['name']}:"
             else:
                 first_line = f":{keyword}:"
-        if "description" in param_dict and len(param_dict["description"]) > 0:
+        if "description" in param_dict and param_dict["description"]:
             first_line += " " + param_dict["description"][0].rstrip("\n")
         if first_line:
             param_docstring.append(first_line + "\n")
