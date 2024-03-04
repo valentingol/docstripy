@@ -1,0 +1,30 @@
+"""This is a title.
+
+This is a subtitle.
+:param param1: Defaults to 0.
+:type param1: int, optional
+:rtype: str
+"""
+"""This is a title.
+
+This is a subtitle.
+
+Args:
+    param1 (int, optional): Defaults to 0.
+
+Returns:
+    str
+"""
+"""This is a title.
+
+This is a subtitle.
+
+Parameters
+----------
+param1 : int, optional
+    By default, 0.
+
+Returns
+-------
+str
+"""
