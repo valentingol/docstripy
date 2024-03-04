@@ -6,6 +6,8 @@ from typing import List
 def postprocess_title_parse(lines: List[str]) -> List[str]:
     """Post-process the title section."""
     new_lines = lines.copy()
+    if not new_lines:
+        return new_lines
     if new_lines[0].strip():
         new_lines[0] = new_lines[0].strip(" ")
         new_lines[0] = new_lines[0][0].capitalize() + new_lines[0][1:]
