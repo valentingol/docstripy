@@ -9,11 +9,12 @@ def test_parse_docstring() -> None:
     """Test docstring file parser."""
     with open("tests/files/test1.py", encoding="utf-8") as file:
         lines_test1 = file.readlines()
-    range_docstr, _ = parse_docstring(lines_test1)
-    check.equal(range_docstr, [[8, 24], [32, 33], [43, 47]])
+    range_docstr, _, to_insert = parse_docstring(lines_test1)
+    check.equal(range_docstr, [[8, 24], [32, 33], [43, 47], [51, 52]])
+    check.equal(to_insert, [False, False, False, True])
     with open("tests/files/test4.py", encoding="utf-8") as file:
         lines_test4 = file.readlines()
-    _, sections_list = parse_docstring(lines_test4)
+    _, sections_list, _ = parse_docstring(lines_test4)
     check.equal(len(sections_list), 3)
     expected_dict = {
         "_escaped": True,
