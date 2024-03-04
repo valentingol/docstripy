@@ -48,7 +48,7 @@ Raises:
     ValueError: If something goes wrong.
 
 Returns:
-    int:
+    int
     result2 (str): The second result.
 
 Attributes:
@@ -90,7 +90,7 @@ ValueError :
 
 Returns
 -------
-int :
+int
 result2 : str
     The second result.
 
