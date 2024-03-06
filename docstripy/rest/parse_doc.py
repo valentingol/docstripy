@@ -18,9 +18,10 @@ def parse_params(
     section_name : str, optional
         Name of the section, one of "param", "return", "attribute", "raises".
         It is also the pattern before element name for description:
-        `:<pattern> name: <description>`
-    pattern_type : str
-        Pattern before element name for type: `:<pattern> name: <type>`
+        `:<pattern> name: <description>`. By default, "param".
+    pattern_type : str, optional
+        Pattern before element name for type: `:<pattern> name: <type>`.
+        By default, "type".
     """
     params_list: List[dict] = []
     len_pattern_1 = len(":" + section_name)

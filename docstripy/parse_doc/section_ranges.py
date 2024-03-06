@@ -29,10 +29,9 @@ def parse_sections_ranges(lines: List[str]) -> Tuple[Dict, str]:
     -------
     sec_ranges : Dict
         Section ranges.
-        Example: {'_title': [0, 2], '_parameters': [3, 5], "Note": [6, 9]}
+        Example: {'_title': [0, 2], '_parameters': [3, 5], "Note": [6, 9]}.
     style : str
         Style of the docstring (one of 'numpy', 'google' or 'rest').
-
     """
     lines = remove_indent(lines)
     sec_ranges = {"_title": [0, -1]}

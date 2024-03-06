@@ -2,6 +2,7 @@
 
 import pytest_check as check
 
+from docstripy.google.parse_doc import is_define_section
 from docstripy.parse_doc.main_parser import parse_docstring
 
 
@@ -12,6 +13,7 @@ def test_parse_docstring() -> None:
     range_docstr, _, to_insert = parse_docstring(lines_test1)
     check.equal(range_docstr, [[8, 24], [32, 33], [43, 47], [51, 52]])
     check.equal(to_insert, [False, False, False, True])
+
     with open("tests/files/test4.py", encoding="utf-8") as file:
         lines_test4 = file.readlines()
     _, sections_list, _ = parse_docstring(lines_test4)
@@ -113,3 +115,15 @@ def test_parse_docstring() -> None:
                 expected_dict["_parameters"][j],  # type: ignore
                 f"Error with style {i} and parameter {j}.",
             )
+    with open("tests/files/test5.py", encoding="utf-8") as file:
+        lines_test5 = file.readlines()
+    ranges_docstr, _, _ = parse_docstring(lines_test5)
+    check.equal(ranges_docstr, [[8, 12]])
+
+
+def test_define_google_section() -> None:
+    """Test is_define_section of google parsing doc."""
+    check.is_true(is_define_section("Example :\n"))
+    check.is_false(is_define_section("Another example :\n"))
+    check.is_false(is_define_section(" Example :\n"))
+    check.is_false(is_define_section("Example\n"))

@@ -7,9 +7,7 @@ def satenize_ranges(ranges: List[List[int]]) -> List[List[int]]:
     """Check if the ranges are overlapping."""
     for i, range1 in enumerate(ranges):
         for range2 in ranges[i + 1 :]:
-            if range1[0] <= range2[0] < range1[1]:
-                raise ValueError("Found overlapping ranges.")
-            if range2[0] <= range1[0] < range2[1]:
+            if range1[0] <= range2[0] < range1[1] or range2[0] <= range1[0] < range2[1]:
                 raise ValueError("Found overlapping ranges.")
     return ranges
 
@@ -56,7 +54,7 @@ def apply_diff(
         Whether to insert the lines or overwrite them instead.
         If a list is given, it should have the same
         length as ranges. Otherwise, the same value will be used for all ranges.
-        By default False.
+        By default, False.
     """
     if isinstance(to_insert, bool):
         to_insert_list = [to_insert] * len(ranges)

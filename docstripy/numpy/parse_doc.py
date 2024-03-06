@@ -15,6 +15,7 @@ def parse_params(lines: List[str], section_name: str = "param") -> List[dict]:
         Lines of docstring.
     section_name : str, optional
         Name of the section, one of "param", "return", "attribute", "raises".
+        By default, "param".
     """
     # Skip the 2 first lines
     lines = lines[2:]

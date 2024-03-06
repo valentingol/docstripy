@@ -56,7 +56,8 @@ def find_prefix(
     prefix_continue : Tuple[str, ...]
         Prefixes string of the following lines.
     dash : bool, optional
-        Whether to expect a dash line after the first line, by default False.
+        Whether to expect a dash line after the first line.
+        By default, False.
 
     Returns
     -------
@@ -108,13 +109,12 @@ def remove_quotes(lines: List[str]) -> Tuple[List[str], bool]:
             ind = new_lines[-1].index(comment_pattern)
             new_lines[-1] = new_lines[-1][:ind]
             break
-
     for i, line in enumerate(lines):
         if "r'''" in line or 'r"""' in line:
             escaped = True
-            new_lines[i] = line.replace("r'''", "").replace('r"""', "")
+            new_lines[i] = line.replace("r'''", "'''").replace('r"""', '"""')
         if "'''" in new_lines[i] or '"""' in new_lines[i]:
-            new_lines[i] = line.replace("'''", "").replace('"""', "")
+            new_lines[i] = new_lines[i].replace("'''", "").replace('"""', "")
     new_lines = add_eol(new_lines)  # Add end of lines if removed
     return new_lines, escaped
 

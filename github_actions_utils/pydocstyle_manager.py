@@ -8,7 +8,7 @@ def check_output() -> None:
 
     Raises
     ------
-    ValueError
+    ValueError :
         If Pydocstyle find errors.
     """
     args = sys.argv[1:]

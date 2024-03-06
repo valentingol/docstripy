@@ -1,11 +1,11 @@
-"""Test def line parsing."""
+"""Test signature line parsing."""
 
 import pytest_check as check
 
-from docstripy.parse_doc.parse_def import parse_def
+from docstripy.parse_doc.parse_signature import parse_signature
 
 
-def test_parse_def() -> None:
+def test_parse_signature() -> None:
     """Test parse_args function."""
     lines = [
         "def my_func(\n",
@@ -16,7 +16,7 @@ def test_parse_def() -> None:
         "    **kwargs: Any,\n",
         ") -> Tuple[List[Dict[str, Any]] | None, Tuple[Int, Float]]: # noqa\n",
     ]
-    fn_name, rtype, args = parse_def(lines)
+    fn_name, rtype, args = parse_signature(lines)
     check.equal(fn_name, "my_func")
     check.equal(rtype, ["List[Dict[str, Any]] | None", "Tuple[Int, Float]"])
     expected_args = [
@@ -49,7 +49,7 @@ def test_parse_def() -> None:
     for i, arg in enumerate(args):
         check.equal(arg, expected_args[i], f"Error at arg {i}")
     lines = ["def my_func(n):\n"]
-    fn_name, rtype, args = parse_def(lines)
+    fn_name, rtype, args = parse_signature(lines)
     check.equal(fn_name, "my_func")
     check.equal(rtype, [])
     expected_args = [
