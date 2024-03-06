@@ -4,8 +4,11 @@ from functools import partial
 from typing import List, Tuple
 
 from docstripy.google.parse_doc import parse_params as parse_params_google
-from docstripy.lines_routines import add_eol, clean_trailing_empty
 from docstripy.numpy.parse_doc import parse_params as parse_params_numpy
+from docstripy.parse_doc.postprocessing import (
+    postprocess_default_val,
+    postprocess_description,
+)
 from docstripy.rest.parse_doc import parse_params as parse_params_rest
 
 
@@ -24,8 +27,7 @@ def parse_params_all(
         Format style of the docstring (one of 'numpy', 'google' or 'rest').
     section_name : str, optional
         Name of the section to parse. One of "param", "return", "yield", "attribute",
-        "raises".
-        By default, "param".
+        "raises". By default, "param".
 
     Returns
     -------
@@ -94,7 +96,6 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
     """Extract default value from description."""
     # Lines merging
     line = "".join(lines)
-
     patterns = [
         "default is ",
         "Default is ",
@@ -114,7 +115,7 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
         "Default: ",
     ]
     patterns_comma1 = [", " + pattern for pattern in patterns]
-    patterns_comma2 = [pattern + ", " for pattern in patterns]
+    patterns_comma2 = [pattern[:-1] + ", " for pattern in patterns]
     patterns = patterns_comma2 + patterns_comma1 + patterns
     default = ""
     for pattern in patterns:
@@ -130,26 +131,3 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
     lines = line.split("\n")
     lines = [line + "\n" for line in lines]
     return lines, default
-
-
-def postprocess_description(lines: List[str]) -> List[str]:
-    """Post process description."""
-    lines = add_eol(lines)
-    lines = clean_trailing_empty(lines)
-    if lines and len(lines[-1]) > 1 and lines[-1][-2] not in (".", "?", "!"):
-        lines[-1] = lines[-1][:-1] + ".\n"
-    # Capitalize first letter
-    if len(lines) > 0:
-        first_line_desc = lines[0]
-        if 97 <= ord(first_line_desc[0]) <= 122:
-            cap_letter = first_line_desc[0].capitalize()
-            lines[0] = cap_letter + first_line_desc[1:]
-    return lines
-
-
-def postprocess_default_val(default: str) -> str:
-    """Post process default value string."""
-    if default == "":
-        return default
-    default.replace("\n", " ")  # remove new lines characters
-    return default
