@@ -62,41 +62,6 @@ return elements, the output docstring will not specify those elements either.
 However, if the function definition contains more information, the docstring will
 be updated with all the corresponding information available in the signature.
 
-For instance:
-
-```python
-
-def my_function(a: int, b: int) -> int:
-    """My function
-    Parameters
-    ----------
-    a : str
-        The first argument.
-    """
-    # Here the type of `a` is wrong and the type of `b` is missing.
-    # Plus, no information is given on the return type.
-    return a + b
-```
-
-Results in:
-
-```python
-def my_function(a: int, b: int) -> int:
-    """My function.
-
-    Parameters
-    ----------
-    a : int
-        The first argument.
-    b : int
-    """
-    # The type of `a` is fixed, the type of `b` is added.
-    # No information is given on the return type as it was not present
-    # in the old docstring.
-    # Fix some syntax issues (end of line dot and in-between spaces).
-    return a + b
-```
-
 ### Max line length
 
 You can control the max line length of the docstring with the `--len` option.
@@ -119,56 +84,7 @@ Note that the default value is 4 spaces but you can set any value you want.
 When a function has no docstring, a short one will be created based on
 the function name. For instance:
 
-```python
-def clean_trailing_spaces(line: str) -> new_line: str:
-    return line.rstrip()
-```
-
-Results in:
-
-```python
-def clean_trailing_spaces(line: str) -> new_line: str:
-    """Clean trailing spaces."""
-    return line.rstrip()
-```
-
 ### Class docstring
 
 The class docstring is updated based on the class definition with the signature
 of `__init__` method. For instance:
-
-```python
-class MyClass:
-    """My class.
-
-    Parameters
-    ----------
-    attr:
-        The attribute
-    """
-
-    # A comment
-    cls_attr: 0  # Class attribute
-
-    def __init__(self, attr: int = 0) -> None:
-        self.attr = attr
-```
-
-Results in:
-
-```python
-class MyClass:
-    """My class.
-
-    Parameters
-    ----------
-    attr : int, optional
-        The attribute. By default, 0.
-    """
-
-    # A comment
-    cls_attr: 0  # some class attribute
-
-    def __init__(self, attr: int = 0) -> None:
-        self.attr = attr
-```
