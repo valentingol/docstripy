@@ -2,11 +2,13 @@
 
 import os
 import shutil
+import sys
 
 import pytest
 import pytest_check as check
 
-from docstripy.main import write_file, write_files_recursive
+from docstripy.main import parse_args
+from docstripy.write import write_file, write_files_recursive
 
 
 def test_main() -> None:
@@ -38,6 +40,19 @@ def test_main() -> None:
     check.equal(lines[8], '    """Clean trailing spaces."""\n')
     if os.path.exists("tests/tmp"):
         shutil.rmtree("tests/tmp")
+    run = os.system(
+        "docstripy tests/files/class.py -o tests/tmp/class.py "
+        "-s numpy --len 88 --indent 4"
+    )
+    check.equal(run, 0)
+    check.is_true(os.path.exists("tests/tmp/class.py"))
+    with open("tests/tmp/class.py", encoding="utf-8") as file:
+        lines = file.readlines()
+    print(lines)
+    check.equal("    attr : int, optional\n", lines[11])
+    check.equal("        The attribute. By default, 0.\n", lines[12])
+    if os.path.exists("tests/tmp"):
+        shutil.rmtree("tests/tmp")
 
 
 def test_errors(capfd: pytest.CaptureFixture) -> None:
@@ -49,15 +64,16 @@ def test_errors(capfd: pytest.CaptureFixture) -> None:
             overwrite=False,
             docstr_config={"style": "numpy", "max_len": 88, "indent": 2},
         )
-    with pytest.raises(
-        ValueError, match="Error found at lines 3-8 during docstring building.*"
-    ):
-        write_file(
-            "tests/wrong_files/file2.py",
-            "tests/tmp/file2.py",
-            overwrite=False,
-            docstr_config={"style": "numpy", "max_len": 88, "indent": 2},
-        )
+    for style in ("numpy", "rest", "google"):
+        with pytest.raises(
+            ValueError, match="Error found at lines 3-8 during docstring building.*"
+        ):
+            write_file(
+                "tests/wrong_files/file2.py",
+                "tests/tmp/file2.py",
+                overwrite=False,
+                docstr_config={"style": style, "max_len": 88, "indent": 2},
+            )
     # Case multiple files
     write_files_recursive(
         "tests/wrong_files",
@@ -67,3 +83,12 @@ def test_errors(capfd: pytest.CaptureFixture) -> None:
     )
     out, _ = capfd.readouterr()
     check.is_true(out.startswith("Error when parsing file(s):\n"))
+    # Case args errors
+    old_argv = sys.argv.copy()
+    sys.argv = ["docstripy", ".", "-o", "./out", "-w"]
+    with pytest.raises(ValueError, match="Cannot use both.*"):
+        parse_args()
+    sys.argv = ["docstripy", "."]
+    with pytest.raises(ValueError, match="You must specify an output path.*"):
+        parse_args()
+    sys.argv = old_argv
