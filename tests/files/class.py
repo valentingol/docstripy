@@ -26,7 +26,7 @@ class MyOtherClass:
 
     Parameters
     ----------
-    attr:int
+    attr: int
         The attribute.
     """
 
