@@ -19,6 +19,12 @@ The input style should be either Numpy, Google, ReST or even a mix of both.
 
 [![Tests](https://github.com/valentingol/docstripy/actions/workflows/tests.yaml/badge.svg)](https://github.com/valentingol/docstripy/actions/workflows/tests.yaml)
 [![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/valentingol/6fd638b90ac10eced712b8d5ca83b04f/raw/npdocify_tests.json)](https://github.com/valentingol/docstripy/actions/workflows/tests.yaml)
+[![Documentation Status](https://readthedocs.org/projects/docstripy/badge/?version=latest)](https://docstripy.readthedocs.io/en/latest/?badge=latest)
+
+## Documentation
+
+The documentation :memo: is available at
+[docstripy.readthedocs.io](https://docstripy.readthedocs.io/en/latest/).
 
 ## How to use
 
@@ -41,7 +47,13 @@ Available styles (`style`) are:
 * "google": Google style
 * "rest": ReST style
 
+See examples in the
+[documentation](https://docstripy.readthedocs.io/en/latest/howto.html).
+
 ## Cool features
+
+See examples of the features in the
+[documentation](https://docstripy.readthedocs.io/en/latest/features.html).
 
 ### Overwrite the files directly
 
