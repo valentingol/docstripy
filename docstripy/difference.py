@@ -7,9 +7,7 @@ def satenize_ranges(ranges: List[List[int]]) -> List[List[int]]:
     """Check if the ranges are overlapping."""
     for i, range1 in enumerate(ranges):
         for range2 in ranges[i + 1 :]:
-            if range1[0] <= range2[0] < range1[1]:
-                raise ValueError("Found overlapping ranges.")
-            if range2[0] <= range1[0] < range2[1]:
+            if range1[0] <= range2[0] < range1[1] or range2[0] <= range1[0] < range2[1]:
                 raise ValueError("Found overlapping ranges.")
     return ranges
 
