@@ -59,7 +59,6 @@ def test_main() -> None:
     check.is_true(os.path.exists("tests/tmp/class.py"))
     with open("tests/tmp/class.py", encoding="utf-8") as file:
         lines = file.readlines()
-    print(lines)
     check.equal("    attr : int, optional\n", lines[12])
     check.equal("        The attribute. By default, 0.\n", lines[13])
     check.equal("    attr : int\n", lines[28])
