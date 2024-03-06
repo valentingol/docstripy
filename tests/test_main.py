@@ -62,6 +62,7 @@ def test_main() -> None:
     print(lines)
     check.equal("    attr : int, optional\n", lines[12])
     check.equal("        The attribute. By default, 0.\n", lines[13])
+    check.equal("    attr : int\n", lines[28])
     check.equal('    """\n', lines[30])
     check.equal('        """Forward."""\n', lines[33])
     if os.path.exists("tests/tmp"):
