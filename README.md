@@ -82,9 +82,9 @@ Note that the default value is 4 spaces but you can set any value you want.
 ### Create a short docstring when missing
 
 When a function has no docstring, a short one will be created based on
-the function name. For instance:
+the function name.
 
 ### Class docstring
 
 The class docstring is updated based on the class definition with the signature
-of `__init__` method. For instance:
+of `__init__` method.
