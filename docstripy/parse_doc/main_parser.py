@@ -9,10 +9,10 @@ from docstripy.lines_routines import (
     remove_indent,
     remove_quotes,
 )
-from docstripy.parse_doc.parse_def import parse_def
 from docstripy.parse_doc.parse_params import parse_params_all
 from docstripy.parse_doc.postprocessing import postprocess_title_parse
 from docstripy.parse_doc.section_ranges import parse_sections_ranges
+from docstripy.parse_doc.signature import find_range_matching, merge_docstr_signature
 
 
 def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List[bool]]:
@@ -33,24 +33,39 @@ def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List
         Whether to insert a new docstring or overwrite the existing one.
     """
     ranges_docstr, ranges_def = parse_ranges(lines)
+    rem_rng_docstr = ranges_docstr.copy()  # remaining docstring ranges
+    out_rng_docstr = []  # output docstring ranges
     sections_list = []
     to_insert = []
     for range_def in ranges_def:
-        range_docstr = find_range_matching(range_def, ranges_docstr)
         lines_def = lines[range_def[0] : range_def[1]]
+        range_docstr = find_range_matching(
+            range_def,
+            rem_rng_docstr,
+            lines=lines,
+        )
         if range_docstr == [-1, -1]:
             # No docstring: add one
             lines_docstr = ["\n"]
-            ranges_docstr.append([range_def[0] + 1, range_def[0] + 2])
+            out_rng_docstr.append([range_def[0] + 1, range_def[0] + 2])
             to_insert.append(True)
         else:
+            rem_rng_docstr.remove(range_docstr)
             lines_docstr = lines[range_docstr[0] : range_docstr[1]]
+            out_rng_docstr.append(range_docstr)
             to_insert.append(False)
 
         sections = parse_all(lines_docstr)
-        sections = merge_docstr_def(sections, lines_def)
+        sections = merge_docstr_signature(sections, lines_def)
         sections_list.append(sections)
-    return ranges_docstr, sections_list, to_insert
+    # Case docstring without def (ex class)
+    for range_docstr in rem_rng_docstr:
+        lines_docstr = lines[range_docstr[0] : range_docstr[1]]
+        out_rng_docstr.append(range_docstr)
+        to_insert.append(False)
+        sections = parse_all(lines_docstr)
+        sections_list.append(sections)
+    return out_rng_docstr, sections_list, to_insert
 
 
 def parse_all(lines_docstr: List[str]) -> dict:
@@ -148,55 +163,3 @@ def parse_all(lines_docstr: List[str]) -> dict:
     sections["_title"] = postprocess_title_parse(sections["_title"])
     sections["_escaped"] = escaped
     return sections
-
-
-def merge_docstr_def(
-    sections_docstr: dict,
-    lines_def: List[str],
-) -> dict:
-    """Merge docstring and definition ranges."""
-    if not lines_def:
-        return sections_docstr
-    fn_name, rtypes, args = parse_def(lines_def)
-
-    if "_title" not in sections_docstr or not clean_leading_empty(
-        sections_docstr["_title"]
-    ):
-        sections_docstr["_title"] = [" ".join(fn_name.split("_")).capitalize() + ".\n"]
-    if "_parameters" in sections_docstr and sections_docstr["_parameters"]:
-        # NOTE: only add/update param info if already any is provided in the doc
-        for param in sections_docstr["_parameters"]:
-            for arg in args:
-                if param["name"] in (arg["name"], arg["name"].lstrip("*")):
-                    param_name = param["name"]
-                    # Priority to the docstring
-                    for key in arg:
-                        if arg[key]:
-                            param[key] = arg[key]
-                    param["name"] = param_name
-        for arg in args:
-            if arg["name"].lstrip("*") not in [
-                param["name"].lstrip("*") for param in sections_docstr["_parameters"]
-            ]:
-                sections_docstr["_parameters"].append(arg)
-    if (
-        "_returns" in sections_docstr
-        and sections_docstr["_returns"]
-        and len(rtypes) == len(sections_docstr["_returns"])
-    ):
-        # NOTE: only add/update return info if already any is provided in the doc
-        for i, return_arg in enumerate(sections_docstr["_returns"]):
-            if "type" not in return_arg or not return_arg["type"]:
-                return_arg["type"] = rtypes[i]
-    return sections_docstr
-
-
-def find_range_matching(
-    range_def: List[int],
-    ranges_docstr: List[List[int]],
-) -> List[int]:
-    """Find the range in ranges_def that matches range_docstr."""
-    for range_docstr in ranges_docstr:
-        if 0 <= range_docstr[0] - range_def[1] <= 1:
-            return range_docstr
-    return [-1, -1]
