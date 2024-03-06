@@ -72,7 +72,7 @@ def find_range_matching(
     for range_docstr in ranges_docstr:
         if 0 <= range_docstr[0] - range_def[1] <= 1:
             return range_docstr
-    if "def __init__" in lines[range_def[0]]:
+    if lines and "def __init__" in lines[range_def[0]]:
         # Case where the function is __init__ and the docstring can be
         # right under the class definition
         candidate = sorted(
@@ -84,7 +84,7 @@ def find_range_matching(
     return [-1, -1]
 
 
-def are_lines_class_head(lines: List[str]):
+def are_lines_class_head(lines: List[str]) -> bool:
     """Return if the lines are the head of a class."""
     lines = lines.copy()
     lines = [line.strip().rsplit("#", maxsplit=1)[0].rstrip() for line in lines]
