@@ -76,7 +76,7 @@ def build_section_params_numpy(
             if (
                 not param_docstring
                 or "description" not in param_dict
-                or len(param_docstring[-1]) > max_len * 0.75
+                or (max_len > 0 and len(param_docstring[-1]) > max_len * 0.75)
             ):
                 line = "By default, " + param_dict["default"] + ".\n"
                 param_docstring.append(line)
