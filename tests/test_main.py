@@ -7,34 +7,45 @@ import sys
 import pytest
 import pytest_check as check
 
-from docstripy.main import parse_args
+from docstripy.main import main, parse_args
 from docstripy.write import write_file, write_files_recursive
 
 
 def test_main() -> None:
     """Test main entry point."""
+    old_argv = sys.argv.copy()
     if os.path.exists("tests/tmp"):
         shutil.rmtree("tests/tmp")
-    run = os.system("docstripy --help")
-    check.equal(run, 0)
-    run = os.system(
-        "docstripy tests/files -o tests/tmp/google -s google --len 88 --indent 2"
-    )
-    check.equal(run, 0)
-    run = os.system(
-        "docstripy tests/files -o tests/tmp/rest -s rest --len 88 --indent 2"
-    )
-    check.equal(run, 0)
-    run = os.system(
-        "docstripy tests/files -o tests/tmp/numpy -s numpy --len 88 --indent 2"
-    )
-    check.equal(run, 0)
+    os.system("docstripy --help")
+    sys.argv = [
+        "docstripy",
+        "tests/files",
+        "-o",
+        "tests/tmp/google",
+        "-s",
+        "google",
+        "--len",
+        "88",
+        "--indent",
+        "2",
+    ]
+    main()
+    sys.argv[3] = "tests/tmp/rest"
+    sys.argv[5] = "rest"
+    main()
+    sys.argv[3] = "tests/tmp/numpy"
+    sys.argv[5] = "numpy"
+    main()
     for style in ("google", "numpy", "rest"):
         path = f"tests/tmp/{style}"
         check.is_true(os.path.exists(path), f"Directory not found: {path}")
         for i in range(1, 5):
             path = f"tests/tmp/{style}/test{i}.py"
             check.is_true(os.path.exists(path), f"File not found: {path}")
+        path = f"tests/tmp/{style}/empty.py"
+        check.is_true(os.path.exists(path), f"File not found: {path}")
+        path = f"tests/tmp/{style}/class.py"
+        check.is_true(os.path.exists(path), f"File not found: {path}")
     with open("tests/tmp/google/empty.py", encoding="utf-8") as file:
         lines = file.readlines()
     check.equal(lines[8], '    """Clean trailing spaces."""\n')
@@ -49,10 +60,13 @@ def test_main() -> None:
     with open("tests/tmp/class.py", encoding="utf-8") as file:
         lines = file.readlines()
     print(lines)
-    check.equal("    attr : int, optional\n", lines[11])
-    check.equal("        The attribute. By default, 0.\n", lines[12])
+    check.equal("    attr : int, optional\n", lines[12])
+    check.equal("        The attribute. By default, 0.\n", lines[13])
+    check.equal('    """\n', lines[30])
+    check.equal('        """Forward."""\n', lines[33])
     if os.path.exists("tests/tmp"):
         shutil.rmtree("tests/tmp")
+    sys.argv = old_argv
 
 
 def test_errors(capfd: pytest.CaptureFixture) -> None:
