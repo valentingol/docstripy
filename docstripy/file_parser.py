@@ -53,6 +53,7 @@ def docstring_parse_range(
     """Parse docstring lines range from source code."""
     docstring_starters = ('"""', "'''", 'r"""', "r'''")
     strip_line = line.strip()
+    strip_wo_comment = line.rsplit("#", maxsplit=1)[0].strip()
     if strip_line.startswith(docstring_starters) and line.startswith(" "):
         # Case one-line docstring
         if (
@@ -68,7 +69,11 @@ def docstring_parse_range(
                 current_range.append(ind_line + 1)
                 ranges.append(current_range)
                 in_docstr = False
-    elif in_docstr and strip_line.endswith('"""') or strip_line.endswith("'''"):
+    elif (
+        in_docstr
+        and strip_wo_comment.endswith('"""')
+        or strip_wo_comment.endswith("'''")
+    ):
         current_range.append(ind_line + 1)
         ranges.append(current_range)
         in_docstr = False
