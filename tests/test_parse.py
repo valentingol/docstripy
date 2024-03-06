@@ -113,3 +113,8 @@ def test_parse_docstring() -> None:
                 expected_dict["_parameters"][j],  # type: ignore
                 f"Error with style {i} and parameter {j}.",
             )
+    with open("tests/files/test5.py", encoding="utf-8") as file:
+        lines_test5 = file.readlines()
+    print("============")
+    ranges_docstr, _, _ = parse_docstring(lines_test5)
+    check.equal(ranges_docstr, [[8, 12]])
