@@ -152,6 +152,4 @@ def postprocess_default_val(default: str) -> str:
     if default == "":
         return default
     default.replace("\n", " ")  # remove new lines characters
-    if default.endswith("."):
-        default = default[:-1]
     return default
