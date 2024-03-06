@@ -16,5 +16,5 @@ class MyClass:
     # A comment
     cls_attr: 0  # some class attribute
 
-    def __init(self, attr: int = 0) -> None:
+    def __init__(self, attr: int = 0) -> None:
         self.attr = attr
