@@ -8,4 +8,3 @@ pip install docstripy
 ```
 
 This package is supported on Linux, macOS and Windows.
-It is also supported on Jupyter Notebooks.
