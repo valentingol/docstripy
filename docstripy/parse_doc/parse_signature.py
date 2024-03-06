@@ -5,12 +5,12 @@ from typing import List
 from docstripy.lines_routines import clean_comment
 
 
-def parse_def(lines: List[str]) -> tuple[str, List[str], List[dict]]:
-    """Parse funbction signature ("def ...")."""
+def parse_signature(lines: List[str]) -> tuple[str, List[str], List[dict]]:
+    """Parse function signature ("def ...")."""
     lines = clean_comment(lines)
     lines = [line.strip() for line in lines]
-    def_line = " ".join(lines).strip()
-    parenthesis1_split = def_line.split("(", maxsplit=1)
+    sign_line = " ".join(lines).strip()
+    parenthesis1_split = sign_line.split("(", maxsplit=1)
     fn_name = parenthesis1_split[0].replace("def ", "").strip()
     parenthesis2_split = parenthesis1_split[1].rsplit(")", maxsplit=1)
     if "->" in parenthesis2_split[1]:
@@ -28,12 +28,12 @@ def parse_def(lines: List[str]) -> tuple[str, List[str], List[dict]]:
     comma_split = [
         split.strip() for split in comma_split if split.strip() not in ("*", "/", "")
     ]
-    args = [parse_def_args(split) for split in comma_split]
+    args = [parse_signature_args(split) for split in comma_split]
     return fn_name, rtypes, args
 
 
-def parse_def_args(split: str) -> dict:
-    """Parse function arguments on def line."""
+def parse_signature_args(split: str) -> dict:
+    """Parse function arguments on signature line."""
     arg_name, arg_type, arg_default = "", "", ""
     if ":" in split:
         arg_name, arg_default_type = split.split(":", maxsplit=1)
