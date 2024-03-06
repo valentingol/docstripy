@@ -23,7 +23,7 @@ def myfunc_rest(  # pylint: disable=W0102
     This parameter is very important.
 
     Very important.
-        Default is an empty list.
+        Default is an empty list
     :type name2: list | str, optional
     :param name3: A dictionary, default is {"a": 1}.
     :type name3: Dict[str, int] optional
