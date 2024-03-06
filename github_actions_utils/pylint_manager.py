@@ -10,12 +10,12 @@ def check_output() -> float:
 
     Raises
     ------
-    ValueError
+    ValueError :
         If Pylint score is below SCORE_MIN.
 
     Returns
     -------
-    score: float
+    score : float
         Score of Pylint.
     """
     args = sys.argv[1:]

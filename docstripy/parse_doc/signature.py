@@ -61,10 +61,10 @@ def find_range_matching(
 
     Parameters
     ----------
-    ranges_def : List[int]
+    range_def : List[int]
         Range of signature lines.
     ranges_docstr : List[List[int]]
-        Ranges of all the docstrings of the file
+        Ranges of all the docstrings of the file.
     lines : Optional[List[str]], optional
         Lines of the whole file. Only used to find class docstrings.
         By default, not specified (None).

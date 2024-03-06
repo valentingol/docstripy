@@ -22,7 +22,7 @@ def parse_params_all(
         Lines of the docstring containing parameters descriptions.
     style : str
         Format style of the docstring (one of 'numpy', 'google' or 'rest').
-    section_name : str
+    section_name : str, optional
         Name of the section to parse. One of "param", "return", "yield", "attribute",
         "raises".
         By default, "param".

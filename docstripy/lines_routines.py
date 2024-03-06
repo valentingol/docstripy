@@ -56,7 +56,8 @@ def find_prefix(
     prefix_continue : Tuple[str, ...]
         Prefixes string of the following lines.
     dash : bool, optional
-        Whether to expect a dash line after the first line, by default False.
+        Whether to expect a dash line after the first line.
+        By default, False.
 
     Returns
     -------

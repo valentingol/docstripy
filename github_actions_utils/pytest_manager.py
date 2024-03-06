@@ -10,14 +10,14 @@ def check_output() -> float:
 
     Raises
     ------
-    ValueError
+    ValueError :
         If Pytest find failures.
-    ValueError
+    ValueError :
         If coverage is below SCORE_MIN.
 
     Returns
     -------
-    score: float
+    score : float
         Score of coverage.
     """
     args = sys.argv[1:]

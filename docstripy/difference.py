@@ -54,7 +54,7 @@ def apply_diff(
         Whether to insert the lines or overwrite them instead.
         If a list is given, it should have the same
         length as ranges. Otherwise, the same value will be used for all ranges.
-        By default False.
+        By default, False.
     """
     if isinstance(to_insert, bool):
         to_insert_list = [to_insert] * len(ranges)
