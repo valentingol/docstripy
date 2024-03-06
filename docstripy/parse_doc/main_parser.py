@@ -58,13 +58,14 @@ def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List
         sections = parse_all(lines_docstr)
         sections = merge_docstr_signature(sections, lines_def)
         sections_list.append(sections)
-    # Case docstring without def (ex class)
+    # Case class docstring
     for range_docstr in rem_rng_docstr:
-        lines_docstr = lines[range_docstr[0] : range_docstr[1]]
-        out_rng_docstr.append(range_docstr)
-        to_insert.append(False)
-        sections = parse_all(lines_docstr)
-        sections_list.append(sections)
+        if "class" in lines[range_docstr[0] - 1]:
+            lines_docstr = lines[range_docstr[0] : range_docstr[1]]
+            out_rng_docstr.append(range_docstr)
+            to_insert.append(False)
+            sections = parse_all(lines_docstr)
+            sections_list.append(sections)
     return out_rng_docstr, sections_list, to_insert
 
 
