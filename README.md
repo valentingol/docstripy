@@ -131,3 +131,44 @@ def clean_trailing_spaces(line: str) -> new_line: str:
     """Clean trailing spaces."""
     return line.rstrip()
 ```
+
+### Class docstring
+
+The class docstring is updated based on the class definition with the signature
+of `__init__` method. For instance:
+
+```python
+class MyClass:
+    """My class.
+
+    Parameters
+    ----------
+    attr:
+        The attribute
+    """
+
+    # A comment
+    cls_attr: 0  # Class attribute
+
+    def __init__(self, attr: int = 0) -> None:
+        self.attr = attr
+```
+
+Results in:
+
+```python
+class MyClass:
+    """My class.
+
+    Parameters
+    ----------
+    attr : int, optional
+        The attribute. By default, 0.
+    """
+
+    # A comment
+    cls_attr: 0  # some class attribute
+
+    def __init__(self, attr: int = 0) -> None:
+        self.attr = attr
+```
