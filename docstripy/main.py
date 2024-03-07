@@ -3,7 +3,7 @@
 import argparse
 import os.path as osp
 
-from docstripy.write import write_file, write_files_recursive
+from docstripy.write import write_file_ipynb, write_file_py, write_files_recursive
 
 
 def parse_args() -> dict:
@@ -62,8 +62,17 @@ def parse_args() -> dict:
 def main() -> None:
     """Rewrite file(s) docstrings main function."""
     cli_args = parse_args()
-    if osp.isfile(cli_args["in_path"]):
-        write_file(**cli_args)
+    in_path = cli_args["in_path"]
+    if osp.isfile(in_path):
+        if osp.splitext(in_path)[1] == ".py":
+            write_file_py(**cli_args)
+        elif osp.splitext(in_path)[1] == ".ipynb":
+            write_file_ipynb(**cli_args)
+        else:
+            raise ValueError(
+                f"File extension not supported: {in_path} "
+                "(only .py and .ipynb are supported)"
+            )
     write_files_recursive(**cli_args)
 
 
