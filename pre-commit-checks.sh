@@ -28,10 +28,6 @@ echo "***************** PEP8 *****************"
 flake8 .
 check_output "PEP8 checks"
 
-# echo "************** Integration tests **************"
-# pytest tests/integration
-# check_output "Integration tests"
-
 echo "************** Unit tests **************"
 pytest --cov-report term-missing --cov=./docstripy tests/
 check_output "Unit tests"

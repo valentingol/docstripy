@@ -5,6 +5,8 @@ Transform your python docstrings to the format you want :sparkles:
 Support Nympydoc, Google and ReStructuredText as output styles.
 The input style should be either Numpy, Google, ReST or even a mix of both.
 
+Python notebook are supported as well!
+
 [![Release](https://img.shields.io/github/v/tag/valentingol/docstripy?label=Pypi&logo=pypi&logoColor=yellow)](https://pypi.org/project/docstripy/)
 ![PythonVersion](https://img.shields.io/badge/Python-3.7%20%7E%203.11-informational)
 [![License](https://img.shields.io/github/license/valentingol/docstripy?color=999)](https://stringfixer.com/fr/MIT_license)
