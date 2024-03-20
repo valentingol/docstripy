@@ -44,7 +44,8 @@ def parse_ranges(lines: List[str]) -> Tuple[List[List[int]], List[List[int]]]:
                 ind_line=ind_line,
                 states=states,
             )
-    ranges_docstr, ranges_def = states["ranges_docstr"], states["ranges_def"]
+    ranges_docstr = states["ranges_docstr"]  # type: ignore
+    ranges_def = states["ranges_def"]  # type: ignore
     return ranges_docstr, ranges_def
 
 

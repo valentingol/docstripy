@@ -54,15 +54,15 @@ def merge_docstr_signature(
 
 
 def find_range_matching(
-    ranges_def: List[int],
+    ranges_def: List[List[int]],
     ranges_docstr: List[List[int]],
     lines: Optional[List[str]] = None,
-) -> List[int]:
+) -> List[List[int]]:
     """Find the ranges in ranges_docstr that matches ranges_def.
 
     Parameters
     ----------
-    ranges_def : List[int]
+    ranges_def : List[List[int]]
         Range of signature lines.
     ranges_docstr : List[List[int]]
         Ranges of all the docstrings of the file.

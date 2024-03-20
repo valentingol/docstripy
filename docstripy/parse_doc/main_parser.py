@@ -167,7 +167,7 @@ def parse_all(lines_docstr: List[str]) -> dict:
     return sections
 
 
-def clean_empty_param_section(sections: dict) -> dict:
+def clean_empty_param_section(sections: List[dict]) -> List[dict]:
     """Clean empty param dict."""
     new_sections = []
     for param_dict in sections:
