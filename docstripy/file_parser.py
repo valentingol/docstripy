@@ -22,35 +22,42 @@ def parse_ranges(lines: List[str]) -> Tuple[List[List[int]], List[List[int]]]:
     ranges_def: List[List[int]] = []
     current_docstr_range: List[int] = []
     current_def_range: List[int] = []
-    in_docstr, in_def = False, False
+    in_docstr, double_quotes, in_def = False, None, False
+    states = {
+        "ranges_docstr": ranges_docstr,
+        "ranges_def": ranges_def,
+        "current_docstr_range": current_docstr_range,
+        "current_def_range": current_def_range,
+        "in_docstr": in_docstr,
+        "double_quotes": double_quotes,
+        "in_def": in_def,
+    }
     for ind_line, line in enumerate(lines):
-        ranges_docstr, current_docstr_range, in_docstr = docstring_parse_range(
-            ranges=ranges_docstr,
-            current_range=current_docstr_range,
-            in_docstr=in_docstr,
+        states = docstring_parse_range(
             line=line,
             ind_line=ind_line,
+            states=states,
         )
         if not in_docstr:
-            ranges_def, current_def_range, in_def = def_parse_range(
-                ranges=ranges_def,
-                current_range=current_def_range,
-                in_def=in_def,
+            states = def_parse_range(
                 line=line,
                 ind_line=ind_line,
+                states=states,
             )
+    ranges_docstr, ranges_def = states["ranges_docstr"], states["ranges_def"]
     return ranges_docstr, ranges_def
 
 
 def docstring_parse_range(
-    ranges: List[List[int]],
-    current_range: List[int],
-    *,
-    in_docstr: bool,
     line: str,
     ind_line: int,
-) -> Tuple[List[List[int]], List[int], bool]:
+    states: dict,
+) -> dict:
     """Parse docstring lines range from source code."""
+    ranges = states["ranges_docstr"]
+    current_range = states["current_docstr_range"]
+    in_docstr = states["in_docstr"]
+    double_quotes = states["double_quotes"]
     docstring_starters = ('"""', "'''", 'r"""', "r'''")
     strip_line = line.strip()
     strip_wo_comment = line.rsplit("#", maxsplit=1)[0].strip()
@@ -65,30 +72,52 @@ def docstring_parse_range(
             if not in_docstr:
                 current_range = [ind_line]
                 in_docstr = True
-            else:
+                double_quotes = strip_line.startswith(('"""', 'r"""'))
+            elif (double_quotes and strip_wo_comment.endswith('"""')) or (
+                not double_quotes and strip_wo_comment.endswith("'''")
+            ):
                 current_range.append(ind_line + 1)
                 ranges.append(current_range)
                 in_docstr = False
-    elif (
-        in_docstr
-        and strip_wo_comment.endswith('"""')
-        or strip_wo_comment.endswith("'''")
+                double_quotes = None
+    elif in_docstr and (
+        (double_quotes and strip_wo_comment.endswith('"""'))
+        or (not double_quotes and strip_wo_comment.endswith("'''"))
     ):
         current_range.append(ind_line + 1)
         ranges.append(current_range)
         in_docstr = False
-    return ranges, current_range, in_docstr
+        double_quotes = None
+    elif in_docstr and is_def_line(strip_line):
+        # Probably not in a docstring
+        in_docstr = False
+        double_quotes = None
+        current_range = []
+    states["ranges_docstr"] = ranges
+    states["current_docstr_range"] = current_range
+    states["in_docstr"] = in_docstr
+    states["double_quotes"] = double_quotes
+    return states
+
+
+def is_def_line(strip_line: str) -> bool:
+    """Return whether the line is a function or class definition."""
+    return (
+        strip_line.startswith(("def ", "class "))
+        and "(" in strip_line
+        and strip_line.split("(", maxsplit=1)[0].count(" ") == 1
+    )
 
 
 def def_parse_range(
-    ranges: List[List[int]],
-    current_range: List[int],
-    *,
-    in_def: bool,
     line: str,
     ind_line: int,
-) -> Tuple[List[List[int]], List[int], bool]:
-    """Parse docstring lines range from source code."""
+    states: dict,
+) -> dict:
+    """Parse signature lines range from source code."""
+    ranges = states["ranges_def"]
+    current_range = states["current_def_range"]
+    in_def = states["in_def"]
     strip_line = line.rsplit("#", maxsplit=1)[0].strip()
     if not in_def and strip_line.startswith("def "):
         if strip_line.endswith(":"):
@@ -102,4 +131,7 @@ def def_parse_range(
         current_range.append(ind_line + 1)
         ranges.append(current_range)
         in_def = False
-    return ranges, current_range, in_def
+    states["ranges_def"] = ranges
+    states["current_def_range"] = current_range
+    states["in_def"] = in_def
+    return states
