@@ -69,23 +69,19 @@ def parse_params(lines: List[str], section_name: str) -> List[dict]:
 
 def parse_sections_ranges(lines: List[str]) -> Dict:
     """Parse google sections of a docstring."""
-    params_start, params_end = find_prefix(
+    params_start, _ = find_prefix(
         lines, ("Arg:", "Args:", "Param:", "Params:"), ("\n", " ")
     )
-    raises_start, raises_end = find_prefix(lines, ("Raise:", "Raises:"), ("\n", " "))
-    returns_start, returns_end = find_prefix(
-        lines, ("Return:", "Returns:"), ("\n", " ")
-    )
-    yields_start, yields_end = find_prefix(lines, ("Yields:", "Yield:"), ("\n", " "))
-    attr_start, attr_end = find_prefix(
-        lines, ("Attributes:", "Attribute:"), ("\n", " ")
-    )
+    raises_start, _ = find_prefix(lines, ("Raise:", "Raises:"), ("\n", " "))
+    returns_start, _ = find_prefix(lines, ("Return:", "Returns:"), ("\n", " "))
+    yields_start, _ = find_prefix(lines, ("Yields:", "Yield:"), ("\n", " "))
+    attr_start, _ = find_prefix(lines, ("Attributes:", "Attribute:"), ("\n", " "))
     return {
-        "_parameters": [params_start, params_end],
-        "_raises": [raises_start, raises_end],
-        "_returns": [returns_start, returns_end],
-        "_yields": [yields_start, yields_end],
-        "_attributes": [attr_start, attr_end],
+        "_parameters": [params_start, -1],
+        "_raises": [raises_start, -1],
+        "_returns": [returns_start, -1],
+        "_yields": [yields_start, -1],
+        "_attributes": [attr_start, -1],
     }
 
 
