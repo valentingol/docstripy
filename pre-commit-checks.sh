@@ -29,7 +29,7 @@ flake8 .
 check_output "PEP8 checks"
 
 echo "************** Unit tests **************"
-pytest --cov-report term-missing --cov=./docstripy tests/
+pytest --cov-report term-missing --cov=./docstripy tests/unit_tests
 check_output "Unit tests"
 
 printf "\n${GREEN}${BOLD}All checks pass${NORMAL}${WHITE}\n\n"
