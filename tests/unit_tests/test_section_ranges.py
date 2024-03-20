@@ -26,7 +26,7 @@ def test_parse_section_ranges() -> None:
         "_title": [0, 2],
         "_parameters": [2, 5],
         "_returns": [5, 8],
-        "_raises": [15, 17],
+        "_raises": [15, 18],
         "Examples": [8, 12],
         "Notes": [12, 15],
     }

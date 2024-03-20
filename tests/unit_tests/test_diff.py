@@ -39,5 +39,5 @@ def test_apply_diff() -> None:
     check.equal(new_lines[34], "    On multiple lines.\n")
     check.equal(new_lines[35], '    """\n')
 
-    with pytest.raises(ValueError, match="Found overlapping ranges."):
+    with pytest.raises(ValueError, match="Found overlapping docstring line ranges."):
         apply_diff([[7, 23], [15, 32]], text, lines)

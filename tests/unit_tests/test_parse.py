@@ -11,7 +11,8 @@ def test_parse_docstring() -> None:
     with open("tests/files/test1.py", encoding="utf-8") as file:
         lines_test1 = file.readlines()
     range_docstr, _, to_insert = parse_docstring(lines_test1)
-    check.equal(range_docstr, [[8, 24], [32, 33], [43, 47], [51, 52]])
+    # check.equal(False)
+    check.equal(range_docstr, [[8, 24], [32, 33], [54, 58], [62, 63]])
     check.equal(to_insert, [False, False, False, True])
 
     with open("tests/files/test4.py", encoding="utf-8") as file:
@@ -117,8 +118,9 @@ def test_parse_docstring() -> None:
             )
     with open("tests/files/test5.py", encoding="utf-8") as file:
         lines_test5 = file.readlines()
-    ranges_docstr, _, _ = parse_docstring(lines_test5)
-    check.equal(ranges_docstr, [[8, 12]])
+    ranges_docstr, _, to_insert = parse_docstring(lines_test5)
+    check.equal(ranges_docstr, [[8, 12], [15, 16], [16, 20]])
+    check.equal(to_insert, [False, True, False])
 
 
 def test_define_google_section() -> None:

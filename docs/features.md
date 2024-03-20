@@ -59,7 +59,7 @@ def my_function(a: int, b: int) -> int:
 
 You can control the max line length of the docstring with the `--len` option.
 By default, there is no limit. The line lenght take into account the indentation
-found in the file.
+found in the file. It does not applied on wild sections such as "Examples" or "Notes".
 
 ## Two (or any) spaces indentation
 

@@ -37,6 +37,17 @@ def fibonacci(n):
         return 0
     if n == 1:
         return 1
+    print("""
+    This is a test.
+    """)
+    message = """
+    This is a second test.
+    """
+    print(message)
+    message = """
+    This is a third one.
+    """
+    print(message)
     return fibonacci(n - 1) + fibonacci(n - 2)
 
 

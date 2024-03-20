@@ -24,12 +24,17 @@ def generate_new_file(file_lines: List[str], docstr_config: dict) -> List[str]:
         IndentationError,
         NameError,
         ValueError,
+        TypeError,
     ) as err:
         raise ValueError("Error found during docstring parsing.") from err
     new_lines = []
     for range_doc, sections in zip(range_docstrs, sections_list):
         try:
             indent_base = find_indent(file_lines[range_doc[0] : range_doc[1]])
+            # If a blank line found: look for the next non blank line to get indentation
+            i = 1
+            while indent_base == -1 and range_doc[1] + i <= len(file_lines):
+                indent_base = find_indent(file_lines[range_doc[0] : range_doc[1] + i])
             docstring = build_docstring(
                 sections=sections,
                 docstr_config=docstr_config,
@@ -43,6 +48,7 @@ def generate_new_file(file_lines: List[str], docstr_config: dict) -> List[str]:
             IndentationError,
             NameError,
             ValueError,
+            TypeError,
         ) as err:
             raise ValueError(
                 f"Error found at lines {range_doc[0]}-{range_doc[1]} "

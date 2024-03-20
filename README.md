@@ -80,7 +80,7 @@ be updated with all the corresponding information available in the signature.
 
 You can control the max line length of the docstring with the `--len` option.
 By default, there is no limit. The line lenght take into account the indentation
-found in the file.
+found in the file. It does not applied on wild sections such as "Examples" or "Notes".
 
 ### 2 spaces indentation
 
