@@ -40,7 +40,7 @@ def test_parse_section() -> None:
     }
     check.equal(sections2, expected_sections)
 
-    sections3 = parse_all(lines[43:47])
+    sections3 = parse_all(lines[54:58])
     expected_sections = {
         "_escaped": True,
         "_title": [r"Return square." + "\n", "\n", r"Use \escaped characters." + "\n"],

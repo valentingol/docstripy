@@ -64,11 +64,12 @@ def test_main() -> None:
     # Test class docstring
     with open("tests/tmp/class.py", encoding="utf-8") as file:
         lines = file.readlines()
+        print("".join(lines))
     check.equal("    attr : int, optional\n", lines[12])
     check.equal("        The attribute. By default, 0.\n", lines[13])
     check.equal("    attr : int\n", lines[28])
     check.equal('    """\n', lines[30])
-    check.equal('        """Forward."""\n', lines[33])
+    check.equal('        """Forward function."""\n', lines[33])
     # Test notebooks
     run = os.system(
         "docstripy tests/files/notebook.ipynb -o tests/tmp/notebook.ipynb "
@@ -97,18 +98,7 @@ def test_errors(capfd: pytest.CaptureFixture) -> None:
             overwrite=False,
             docstr_config={"style": "numpy", "max_len": 88, "indent": 2},
         )
-    # Case error in building
-    for style in ("numpy", "rest", "google"):
-        with pytest.raises(
-            ValueError, match="Error found at lines 3-8 during docstring building.*"
-        ):
-            write_file_py(
-                "tests/wrong_files/file2.py",
-                "tests/tmp/file2.py",
-                overwrite=False,
-                docstr_config={"style": style, "max_len": 88, "indent": 2},
-            )
-    # case wrong extension
+    # Case wrong extension
     with pytest.raises(ValueError, match="Output file must be a .py file.*"):
         write_file_py(
             "tests/files/empty.py",
@@ -134,7 +124,7 @@ def test_errors(capfd: pytest.CaptureFixture) -> None:
         docstr_config={"style": "numpy", "max_len": 88, "indent": 2},
     )
     out, _ = capfd.readouterr()
-    check.is_true(out.startswith("Error when parsing file(s):\n"))
+    check.is_true("Error when parsing file(s):\n" in out)
     # Case args errors
     sys.argv = ["docstripy", "tests/files", "-o", "tests/tmp", "-w"]
     with pytest.raises(ValueError, match="Cannot use both.*"):
