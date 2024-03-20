@@ -12,24 +12,29 @@ def parse_signature(lines: List[str]) -> tuple[str, List[str], List[dict]]:
     sign_line = " ".join(lines).strip()
     parenthesis1_split = sign_line.split("(", maxsplit=1)
     fn_name = parenthesis1_split[0].replace("def ", "").strip()
-    parenthesis2_split = parenthesis1_split[1].rsplit(")", maxsplit=1)
-    if "->" in parenthesis2_split[1]:
-        rtype_str = parenthesis2_split[1].replace("->", "").replace(":", "").strip()
-        if rtype_str.startswith("Tuple["):
-            rtype_str = rtype_str[6:]
-            rtype_str = rtype_str.rsplit("]", maxsplit=1)[0].strip()
-            rtypes = split_comma(rtype_str)
-        else:
-            rtypes = [rtype_str]
+    try:
+        parenthesis2_split = parenthesis1_split[1].rsplit(")", maxsplit=1)
+        if "->" in parenthesis2_split[1]:
+            rtype_str = parenthesis2_split[1].replace("->", "").replace(":", "").strip()
+            if rtype_str.startswith("Tuple["):
+                rtype_str = rtype_str[6:]
+                rtype_str = rtype_str.rsplit("]", maxsplit=1)[0].strip()
+                rtypes = split_comma(rtype_str)
+            else:
+                rtypes = [rtype_str]
 
-    else:
-        rtypes = []
-    comma_split = split_comma(parenthesis2_split[0])
-    comma_split = [
-        split.strip() for split in comma_split if split.strip() not in ("*", "/", "")
-    ]
-    args = [parse_signature_args(split) for split in comma_split]
-    return fn_name, rtypes, args
+        else:
+            rtypes = []
+        comma_split = split_comma(parenthesis2_split[0])
+        comma_split = [
+            split.strip()
+            for split in comma_split
+            if split.strip() not in ("*", "/", "")
+        ]
+        args = [parse_signature_args(split) for split in comma_split]
+        return fn_name, rtypes, args
+    except (IndexError, ValueError):
+        return fn_name, [], []
 
 
 def parse_signature_args(split: str) -> dict:
@@ -37,12 +42,16 @@ def parse_signature_args(split: str) -> dict:
     arg_name, arg_type, arg_default = "", "", ""
     if ":" in split:
         arg_name, arg_default_type = split.split(":", maxsplit=1)
-        arg_default_type = arg_default_type.strip()
-        if "=" in split:
-            arg_type, arg_default = arg_default_type.split("=", maxsplit=1)
+        if "lambda " in arg_name:  # lambda function
+            arg_name, arg_default = split.split("=", maxsplit=1)
+            arg_type = ""
         else:
-            arg_type = arg_default_type
-            arg_default = ""
+            arg_default_type = arg_default_type.strip()
+            if "=" in split:
+                arg_type, arg_default = arg_default_type.split("=", maxsplit=1)
+            else:
+                arg_type = arg_default_type
+                arg_default = ""
     elif "=" in split:
         arg_name, arg_default = split.split("=", maxsplit=1)
         arg_type = ""
