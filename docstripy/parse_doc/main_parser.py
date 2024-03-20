@@ -33,39 +33,40 @@ def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List
         Whether to insert a new docstring or overwrite the existing one.
     """
     ranges_docstr, ranges_def = parse_ranges(lines)
-    rem_rng_docstr = ranges_docstr.copy()  # remaining docstring ranges
     out_rng_docstr = []  # output docstring ranges
     sections_list = []
     to_insert = []
-    for range_def in ranges_def:
-        lines_def = lines[range_def[0] : range_def[1]]
-        range_docstr = find_range_matching(
-            range_def,
-            rem_rng_docstr,
-            lines=lines,
-        )
-        if range_docstr == [-1, -1]:
+    corresp_ranges_docstr = find_range_matching(
+        ranges_def=ranges_def,
+        ranges_docstr=ranges_docstr,
+        lines=lines,
+    )
+    for rng_def, rng_docstr in zip(ranges_def, corresp_ranges_docstr):
+        if rng_docstr == [-1, -1]:
             # No docstring: add one
             lines_docstr = ["\n"]
-            out_rng_docstr.append([range_def[0] + 1, range_def[0] + 2])
+            out_rng_docstr.append([rng_def[1], rng_def[1] + 1])
             to_insert.append(True)
         else:
-            rem_rng_docstr.remove(range_docstr)
-            lines_docstr = lines[range_docstr[0] : range_docstr[1]]
-            out_rng_docstr.append(range_docstr)
+            lines_docstr = lines[rng_docstr[0] : rng_docstr[1]]
+            out_rng_docstr.append(rng_docstr)
             to_insert.append(False)
-
+        lines_def = lines[rng_def[0] : rng_def[1]]
         sections = parse_all(lines_docstr)
         sections = merge_docstr_signature(sections, lines_def)
         sections_list.append(sections)
     # Case class docstring
-    for range_docstr in rem_rng_docstr:
-        if "class" in lines[range_docstr[0] - 1]:
+    for range_docstr in ranges_docstr:
+        if (
+            range_docstr not in corresp_ranges_docstr
+            and "class" in lines[range_docstr[0] - 1]
+        ):
             lines_docstr = lines[range_docstr[0] : range_docstr[1]]
             out_rng_docstr.append(range_docstr)
             to_insert.append(False)
             sections = parse_all(lines_docstr)
             sections_list.append(sections)
+    clean_empty_sections(sections_list)
     return out_rng_docstr, sections_list, to_insert
 
 
@@ -148,8 +149,8 @@ def parse_all(lines_docstr: List[str]) -> dict:
                 style=style,
                 section_name=section_name,
             )
-            if section:
-                sections[section_unders] = section
+            section = clean_empty_param_section(section)
+            sections[section_unders] = section
 
     # Manage wild sections : remove header
     for section_name in sections:
@@ -164,3 +165,21 @@ def parse_all(lines_docstr: List[str]) -> dict:
     sections["_title"] = postprocess_title_parse(sections["_title"])
     sections["_escaped"] = escaped
     return sections
+
+
+def clean_empty_param_section(sections: dict) -> dict:
+    """Clean empty param dict."""
+    new_sections = []
+    for param_dict in sections:
+        if not all(param_dict[key] in (None, "", False, []) for key in param_dict):
+            new_sections.append(param_dict)
+    return new_sections
+
+
+def clean_empty_sections(sections_list: List[dict]) -> None:
+    """Clean empty param section."""
+    for sections in sections_list:
+        items = list(sections.items())
+        for key, value in items:
+            if not value and key.startswith("_") and key not in ("_title", "_escaped"):
+                sections.pop(key)
