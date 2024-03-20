@@ -75,6 +75,8 @@ def break_sentences(sentences: List[str], max_line_length: int) -> List[str]:
     word_split = sentences[0].split(" ")
     line = word_split[0]
     i_word = 1
+    if len(word_split) == 1:
+        return [line] + break_sentences(sentences[1:], max_line_length)
     while len(line) + len(word_split[i_word]) + 1 <= max_line_length:
         line += " " + word_split[i_word]
         i_word += 1
