@@ -3,12 +3,22 @@
 from typing import List, Tuple, Union
 
 
-def satenize_ranges(ranges: List[List[int]]) -> List[List[int]]:
+def satenize_ranges(
+    ranges: List[List[int]],
+    to_insert_list: List[bool],
+) -> List[List[int]]:
     """Check if the ranges are overlapping."""
     for i, range1 in enumerate(ranges):
-        for range2 in ranges[i + 1 :]:
-            if range1[0] <= range2[0] < range1[1] or range2[0] <= range1[0] < range2[1]:
-                raise ValueError("Found overlapping ranges.")
+        for j, range2 in enumerate(ranges[i + 1 :]):
+            if (
+                not to_insert_list[i]
+                and not to_insert_list[j]
+                and (
+                    range1[0] <= range2[0] < range1[1]
+                    or range2[0] <= range1[0] < range2[1]
+                )
+            ):
+                raise ValueError("Found overlapping docstring line ranges.")
     return ranges
 
 
@@ -18,7 +28,7 @@ def order_lists(
     to_insert: List[bool],
 ) -> Tuple[List[List[int]], List[str], List[bool]]:
     """Order the ranges in descending order and lines accordingly."""
-    sort_indices = sorted(range(len(ranges)), key=lambda i: ranges[i][0])
+    sort_indices = sorted(range(len(ranges)), key=lambda i: ranges[i])
     ranges = [ranges[i] for i in sort_indices[::-1]]
     lines = [lines[i] for i in sort_indices[::-1]]
     to_insert = [to_insert[i] for i in sort_indices[::-1]]
@@ -61,7 +71,7 @@ def apply_diff(
     else:
         to_insert_list = to_insert
     ranges, lines, to_insert_list = order_lists(ranges, lines, to_insert_list)
-    ranges = satenize_ranges(ranges)
+    ranges = satenize_ranges(ranges, to_insert_list)
     new_lines = old_lines.copy()
     for i, line in enumerate(lines):
         start, end = ranges[i]
