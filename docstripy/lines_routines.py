@@ -15,6 +15,9 @@ def add_eol(lines: List[str]) -> List[str]:
 def remove_indent(lines: List[str]) -> List[str]:
     """Remove indent from lines."""
     indent = find_indent(lines)
+    if indent == -1:
+        # No lines
+        return lines
     new_lines = lines.copy()
     for i, line in enumerate(lines):
         new_lines[i] = line[indent:] if line not in ("", "\n") else line
@@ -32,7 +35,7 @@ def add_indent(lines: List[str], indent: int) -> List[str]:
 def find_indent(lines: List[str]) -> int:
     """Find indentation of a docstring."""
     if len([line for line in lines if line not in ("", "\n")]) == 0:
-        return 0
+        return -1
     return min(
         len(line) - len(line.lstrip()) for line in lines if line not in ("", "\n")
     )
