@@ -27,7 +27,7 @@ def build_docstring(
         sections["_title"],
         max_len=max_len - indent_base,
     )
-    docstring = sections["_title"].copy()
+    docstring = sections["_title"].copy() if sections["_title"] else ["\n"]
     esc_char = "r" if sections["_escaped"] else ""
     docstring[0] = esc_char + '"""' + docstring[0]
     if len(sections) == 2 and len(docstring) == 1:  # one-line docstring
