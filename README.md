@@ -65,13 +65,16 @@ You can use the `-w` (or `--overwrite`) option to write the files in place.
 docstripy <dir-or-file_path> -s=<style> -w
 ```
 
+You can find an end-to-end example in the
+[documentation](https://docstripy.readthedocs.io/en/latest/howto.html).
+
 *Notes*:
 
 1) **The module takes into account the fonction definitions**.
 If the definition of the function bring new information, this will be added to the docstring.
 In case of a conflict, the information in **the function definition will be prioritized**.
 It means that docstripy will automatically update your docstring if you update your functions!
-2) If the old docstring not already contains information on parameters and/or
+1) If the old docstring not already contains information on parameters and/or
 return elements, the output docstring will not specify those elements either.
 However, if the function definition contains more information, the docstring will
 be updated with all the corresponding information available in the signature.
