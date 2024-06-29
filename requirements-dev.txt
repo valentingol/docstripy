@@ -8,6 +8,6 @@ pytest
 pytest-check
 pytest-cov
 pytest-mock
-ruff==0.0.287
+ruff==0.5.0
 setuptools==69.0.3
 setuptools_scm==8.0.4
