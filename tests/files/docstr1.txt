@@ -14,7 +14,7 @@ This is a subtitle.
 :rtype: int
 :return result2: The second result.
 :rtype result2: str
-:atribute attr1: This is an attribute, defaults to 0.
+:var attr1: This is an attribute, defaults to 0.
 :type attr1: int
 
 Example:
@@ -97,6 +97,115 @@ result2 : str
 Attributes
 ----------
 attr1 : int
+    This is an attribute. By default, 0.
+
+Example
+-------
+This is an example.
+>>> function(1, '\n')
+0
+
+This is another example.
+>>> function(2, '\n')
+0
+
+Notes
+-----
+This is a note.
+"""
+
+r"""This is a title.
+
+This is a subtitle.
+:param param1: This is a parameter. The description can be multiline,
+    and it can be very very long. Even longer than this.
+
+    And it can have a default value. The default value can be very long too.
+    It is an int, and it was discovered by a very long process, defaults to
+    0.
+:param param2: This is another parameter, defaults to ''.
+:raises ValueError: If something goes wrong.
+:return result2: The second result.
+:var attr1: This is an attribute, defaults to 0.
+
+Example:
+    This is an example.
+    >>> function(1, '\n')
+    0
+
+    This is another example.
+    >>> function(2, '\n')
+    0
+
+Notes:
+    This is a note.
+"""
+
+r"""This is a title.
+
+This is a subtitle.
+
+Args:
+    param1: This is a parameter. The description can be multiline, and
+        it can be very very long. Even longer than this.
+
+        And it can have a default value. The default value can be very long
+        too. It is an int, and it was discovered by a very long process.
+        Defaults to 0.
+    param2: This is another parameter. Defaults to ''.
+
+Raises:
+    ValueError: If something goes wrong.
+
+Returns:
+    result2: The second result.
+
+Attributes:
+    attr1: This is an attribute. Defaults to 0.
+
+Example:
+    This is an example.
+    >>> function(1, '\n')
+    0
+
+    This is another example.
+    >>> function(2, '\n')
+    0
+
+Notes:
+    This is a note.
+"""
+
+r"""This is a title.
+
+This is a subtitle.
+
+Parameters
+----------
+param1 :
+    This is a parameter. The description can be multiline, and it can be
+    very very long. Even longer than this.
+
+    And it can have a default value. The default value can be very long too.
+    It is an int, and it was discovered by a very long process.
+    By default, 0.
+param2 :
+    This is another parameter. By default, ''.
+
+Raises
+------
+ValueError :
+    If something goes wrong.
+
+Returns
+-------
+
+result2 :
+    The second result.
+
+Attributes
+----------
+attr1 :
     This is an attribute. By default, 0.
 
 Example
