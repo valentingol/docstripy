@@ -121,6 +121,9 @@ def test_parse_docstring() -> None:
     ranges_docstr, _, to_insert = parse_docstring(lines_test5)
     check.equal(ranges_docstr, [[8, 12], [15, 16], [16, 20]])
     check.equal(to_insert, [False, True, False])
+    ranges_docstr, _, to_insert = parse_docstring(lines_test5, add_missing=False)
+    check.equal(ranges_docstr, [[8, 12], [16, 20]])
+    check.equal(to_insert, [False, False])
 
 
 def test_define_google_section() -> None:
@@ -129,3 +132,14 @@ def test_define_google_section() -> None:
     check.is_false(is_define_section("Another example :\n"))
     check.is_false(is_define_section(" Example :\n"))
     check.is_false(is_define_section("Example\n"))
+
+
+def test_parse_rest_attr() -> None:
+    """Test ReST attributes parsing."""
+    with open("tests/files/test6.py", encoding="utf-8") as file:
+        lines_test6 = file.readlines()
+    _, sections_list, _ = parse_docstring(lines_test6)
+    check.equal(len(sections_list[0]["_attributes"]), 3)
+    check.equal(sections_list[0]["_attributes"][0]["name"], "integer")
+    check.equal(sections_list[0]["_attributes"][1]["name"], "str")
+    check.equal(sections_list[0]["_attributes"][2]["name"], "bool")
