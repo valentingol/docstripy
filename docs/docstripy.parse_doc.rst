@@ -1,61 +1,50 @@
-docstripy.parse\_doc package
-============================
+docstripy.parse\_doc
+====================
 
-Submodules
-----------
-
-docstripy.parse\_doc.main\_parser module
-----------------------------------------
+docstripy.parse\_doc.main\_parser
+---------------------------------
 
 .. automodule:: docstripy.parse_doc.main_parser
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.parse\_doc.parse\_params module
------------------------------------------
+docstripy.parse\_doc.parse\_params
+----------------------------------
 
 .. automodule:: docstripy.parse_doc.parse_params
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.parse\_doc.parse\_signature module
---------------------------------------------
+docstripy.parse\_doc.parse\_signature
+-------------------------------------
 
 .. automodule:: docstripy.parse_doc.parse_signature
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.parse\_doc.postprocessing module
-------------------------------------------
+docstripy.parse\_doc.postprocessing
+-----------------------------------
 
 .. automodule:: docstripy.parse_doc.postprocessing
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.parse\_doc.section\_ranges module
--------------------------------------------
+docstripy.parse\_doc.section\_ranges
+------------------------------------
 
 .. automodule:: docstripy.parse_doc.section_ranges
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.parse\_doc.signature module
--------------------------------------
+docstripy.parse\_doc.signature
+------------------------------
 
 .. automodule:: docstripy.parse_doc.signature
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: docstripy.parse_doc
    :members:
    :undoc-members:
    :show-inheritance:
