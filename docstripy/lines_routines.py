@@ -1,5 +1,6 @@
 """Routines on code source lines."""
 
+import re
 from typing import List, Tuple
 
 
@@ -143,3 +144,32 @@ def clean_comment(lines: List[str]) -> List[str]:
             line = line[: line.index("#")]
         new_lines.append(line)
     return new_lines
+
+
+def split_first_line(lines: List[str], max_line_length: int) -> List[str]:
+    """Split first line of a docstring."""
+    if max_line_length <= 0:
+        max_line_length = 120  # Default value to avoid too long first line
+    if len(lines) == 0:
+        return lines
+    line, rest = lines[0], lines[1:]
+    if len(line) > max_line_length:
+        first_line = line[:max_line_length]
+        if rest:
+            rest = [line[max_line_length:].strip() + rest[0]] + rest[1:]
+        else:
+            rest = [line[max_line_length:]]
+    else:
+        first_line = line
+    pattern = r'^(.*?(?<![".])\.)(?:(?=\s+[A-Z])|$)([\s\S]*)'
+    match = re.match(pattern, first_line, re.DOTALL)
+    if match:
+        first_line = match.group(1).strip() + "\n"
+        if match.group(2).strip():
+            remaining = match.group(2).lstrip()
+            rest = [remaining + rest[0]] + rest[1:] if rest else [remaining + "\n"]
+        lines = [first_line] + rest
+        # Add blank empty line if needed
+        if len(lines) > 1 and lines[1] != "\n":
+            lines = [lines[0], "\n"] + lines[1:]
+    return lines
