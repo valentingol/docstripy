@@ -68,7 +68,7 @@ def build_section_params_rest(
         "_parameters": ("param", "type"),
         "_raises": ("raises", ""),
         "_returns": ("return", "rtype"),
-        "_attributes": ("ivar", "type"),
+        "_attributes": ("var", "type"),
         "_yields": ("yield", "rtype"),
     }
     keyword, type_keyword = name_to_keyword[section_name]
