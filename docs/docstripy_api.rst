@@ -48,3 +48,13 @@ docstripy.write
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   docstripy.parse_doc
+   docstripy.build_doc
+   docstripy.google
+   docstripy.numpy
+   docstripy.rest

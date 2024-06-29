@@ -1,29 +1,18 @@
-docstripy.build\_doc package
-============================
+docstripy.build\_doc
+====================
 
-Submodules
-----------
-
-docstripy.build\_doc.main\_builder module
------------------------------------------
+docstripy.build\_doc.main\_builder
+----------------------------------
 
 .. automodule:: docstripy.build_doc.main_builder
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.build\_doc.preprocessing module
------------------------------------------
+docstripy.build\_doc.preprocessing
+----------------------------------
 
 .. automodule:: docstripy.build_doc.preprocessing
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: docstripy.build_doc
    :members:
    :undoc-members:
    :show-inheritance:

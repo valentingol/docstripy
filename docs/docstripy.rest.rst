@@ -1,29 +1,18 @@
-docstripy.rest package
-======================
+docstripy.rest
+==============
 
-Submodules
-----------
-
-docstripy.rest.build\_doc module
---------------------------------
+docstripy.rest.build\_doc
+-------------------------
 
 .. automodule:: docstripy.rest.build_doc
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.rest.parse\_doc module
---------------------------------
+docstripy.rest.parse\_doc
+-------------------------
 
 .. automodule:: docstripy.rest.parse_doc
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: docstripy.rest
    :members:
    :undoc-members:
    :show-inheritance:
