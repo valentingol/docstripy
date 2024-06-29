@@ -33,7 +33,7 @@ def myfunc(param1: int = 0, param2: str = '') -> Tuple[int, str]:
     :rtype: int
     :return result2: The second result.
     :rtype result2: str
-    :atribute attr1: This is an attribute, defaults to 0.
+    :ivar attr1: This is an attribute, defaults to 0.
     :type attr1: int
 
     Example:
