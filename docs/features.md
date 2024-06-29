@@ -90,6 +90,23 @@ def clean_trailing_spaces(line: str) -> new_line: str:
     return line.rstrip()
 ```
 
+### You don't want to automatically add missing docstrings?
+
+You can disable this feature with the `--noadd` option
+in command line.
+
+```bash
+docstripy <dir-or-file_path> -s=<style> -w --noadd
+```
+
+## Prevent type hinting
+
+You can disable all type hinting in the docstring with the `--notype` option.
+
+```bash
+docstripy <dir-or-file_path> -s=<style> -w --notype
+```
+
 ## Class docstring
 
 The class docstring is updated based on the class definition with the signature
