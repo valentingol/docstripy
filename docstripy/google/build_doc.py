@@ -15,6 +15,8 @@ def build_doc_google(
     sections_dict: Dict[str, Any],
     max_len: int,
     indent: int,
+    *,
+    include_type: bool = True,
 ) -> List[str]:
     """Build docstring for google style."""
     docstring = current_docstring.copy()
@@ -41,6 +43,7 @@ def build_doc_google(
                 sections_dict[section_name],
                 max_len=max_len,
                 indent=indent,
+                include_type=include_type,
             )
             if clean_trailing_empty(doc_params):
                 docstr_sec.extend(doc_params)
@@ -66,6 +69,8 @@ def build_section_params_google(
     param_dicts: List[dict],
     max_len: int,
     indent: int,
+    *,
+    include_type: bool = True,
 ) -> List[str]:
     """Build parameters, returns, raises, and attributes sections for google style."""
     docstring = []
@@ -74,7 +79,7 @@ def build_section_params_google(
         first_line = ""
         if "name" in param_dict and param_dict["name"]:
             first_line += param_dict["name"]
-        if "type" in param_dict and param_dict["type"]:
+        if include_type and "type" in param_dict and param_dict["type"]:
             if "name" in param_dict and param_dict["name"]:
                 first_line += " ("
             first_line += param_dict["type"]
