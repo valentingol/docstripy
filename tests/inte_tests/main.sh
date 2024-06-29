@@ -1,4 +1,4 @@
-echo "Assuming you have cloned pytorch in tests/tmp/pytorch."
+echo ">>> ** Assuming you have cloned pytorch in tests/tmp/pytorch. ** <<<"
 
 echo "Process with numpy style..."
 python docstripy/main.py tests/tmp/pytorch -o tests/tmp/pytorch2 -s numpy --len 79

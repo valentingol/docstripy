@@ -36,11 +36,23 @@ def parse_args() -> dict:
         type=int,
         default=-1,
     )
+    parser.add_argument(
+        "--noadd",
+        help="Prevent adding docstrings when missing.",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--notype",
+        help="Prevent indicating the types of parameters.",
+        action="store_true",
+    )
     args = parser.parse_args()
     docstr_config = {
         "style": args.style,
         "max_len": args.length,
         "indent": args.indent,
+        "add_missing": not args.noadd,
+        "include_type": not args.notype,
     }
     if args.out_path and args.overwrite:
         raise ValueError(

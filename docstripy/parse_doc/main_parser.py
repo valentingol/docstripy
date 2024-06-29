@@ -15,13 +15,19 @@ from docstripy.parse_doc.section_ranges import parse_sections_ranges
 from docstripy.parse_doc.signature import find_range_matching, merge_docstr_signature
 
 
-def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List[bool]]:
+def parse_docstring(
+    lines: List[str],
+    *,
+    add_missing: bool = True,
+) -> Tuple[List[List[int]], List[dict], List[bool]]:
     """Docstring parser.
 
     Parameters
     ----------
     lines : List[str]
         Lines of the file.
+    add_missing : bool, optional
+        Whether to add missing docstrings, by default True.
 
     Returns
     -------
@@ -43,10 +49,13 @@ def parse_docstring(lines: List[str]) -> Tuple[List[List[int]], List[dict], List
     )
     for rng_def, rng_docstr in zip(ranges_def, corresp_ranges_docstr):
         if rng_docstr == [-1, -1]:
-            # No docstring: add one
-            lines_docstr = ["\n"]
-            out_rng_docstr.append([rng_def[1], rng_def[1] + 1])
-            to_insert.append(True)
+            if add_missing:
+                # No docstring: add one
+                lines_docstr = ["\n"]
+                out_rng_docstr.append([rng_def[1], rng_def[1] + 1])
+                to_insert.append(True)
+            else:
+                continue
         else:
             lines_docstr = lines[rng_docstr[0] : rng_docstr[1]]
             out_rng_docstr.append(rng_docstr)
@@ -82,41 +91,45 @@ def parse_all(lines_docstr: List[str]) -> dict:
     -------
     sections : Dict
         Parsed sections. Can contain the following keys:
-        - _title (List[str])
-        - _parameters (List[Dict])
-        - _returns (List[Dict])
-        - _attributes (List[Dict])
-        - _raises (List[Dict])
-        - any other section name found in the docstring (List[str])
+
+        * _title (List[str])
+        * _parameters (List[Dict])
+        * _returns (List[Dict])
+        * _attributes (List[Dict])
+        * _raises (List[Dict])
+        * any other section name found in the docstring (List[str])
 
     Examples
     --------
     One can parse a docstring as follows:
-    {
-        '_title': ['This is a title\n', '\n', 'This is a description\n'],
-        '_parameters': [
-            {
-                'name': 'param1',
-                'type': 'int',
-                'optional': False,
-                'description': ['Description of param1\n'],
-            },
-            {
-                'name': 'param2',
-                'type': 'str',
-                'optional': True,
-                'description': ['Description of param2\n'],
-                'default': '""',
-            },
-        ],
-        '_returns': [
-            {
-                'type': 'int',
-                'description': ['Description of the return\n'],
-            },
-        ],
-        'Example': ['Example of a section\n'],
-    }
+
+    .. code-block:: python
+
+        {
+            '_title': ['This is a title\n', '\n', 'This is a description\n'],
+            '_parameters': [
+                {
+                    'name': 'param1',
+                    'type': 'int',
+                    'optional': False,
+                    'description': ['Description of param1\n'],
+                },
+                {
+                    'name': 'param2',
+                    'type': 'str',
+                    'optional': True,
+                    'description': ['Description of param2\n'],
+                    'default': '""',
+                },
+            ],
+            '_returns': [
+                {
+                    'type': 'int',
+                    'description': ['Description of the return\n'],
+                },
+            ],
+            'Example': ['Example of a section\n'],
+        }
     """
     lines, escaped = remove_quotes(lines_docstr)
     sec_ranges, style = parse_sections_ranges(lines)

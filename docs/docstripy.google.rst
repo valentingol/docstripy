@@ -1,29 +1,18 @@
-docstripy.google package
-========================
+docstripy.google
+================
 
-Submodules
-----------
-
-docstripy.google.build\_doc module
-----------------------------------
+docstripy.google.build\_doc
+---------------------------
 
 .. automodule:: docstripy.google.build_doc
    :members:
    :undoc-members:
    :show-inheritance:
 
-docstripy.google.parse\_doc module
-----------------------------------
+docstripy.google.parse\_doc
+---------------------------
 
 .. automodule:: docstripy.google.parse_doc
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: docstripy.google
    :members:
    :undoc-members:
    :show-inheritance:

@@ -40,5 +40,6 @@ def build_docstring(
         sections_dict=sections,
         max_len=max_len - indent_base,
         indent=indent,
+        include_type=docstr_config["include_type"],
     )
     return docstring

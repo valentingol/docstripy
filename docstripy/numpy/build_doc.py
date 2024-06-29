@@ -11,6 +11,8 @@ def build_doc_numpy(
     sections_dict: Dict[str, Any],
     max_len: int,
     indent: int,
+    *,
+    include_type: bool = True,
 ) -> List[str]:
     """Build docstring for numpy style."""
     docstring = current_docstring.copy()
@@ -31,6 +33,7 @@ def build_doc_numpy(
                 sections_dict[section_name],
                 max_len=max_len,
                 indent=indent,
+                include_type=include_type,
             )
             if clean_trailing_empty(doc_params):
                 docstr_sec.extend(doc_params)
@@ -58,6 +61,8 @@ def build_section_params_numpy(
     param_dicts: List[dict],
     max_len: int,
     indent: int,
+    *,
+    include_type: bool = True,
 ) -> List[str]:
     """Build parameters, returns, raises, and attributes sections for numpy style."""
     docstring = []
@@ -66,7 +71,7 @@ def build_section_params_numpy(
         first_line = ""
         if "name" in param_dict and param_dict["name"]:
             first_line += param_dict["name"] + " : "
-        if "type" in param_dict and param_dict["type"]:
+        if include_type and "type" in param_dict and param_dict["type"]:
             first_line += param_dict["type"]
             if "optional" in param_dict and param_dict["optional"]:
                 first_line += ", optional"

@@ -91,7 +91,7 @@ If your files are indented with 2 spaces, you can use the `--n_indent=2` option 
 the command line.
 
 ```bash
-docstripy <dir-or-file_path> -s=<style> --n_indent=2
+docstripy <dir-or-file_path> -s=<style> -w --n_indent=2
 ```
 
 Note that the default value is 4 spaces but you can set any value you want.
@@ -99,7 +99,20 @@ Note that the default value is 4 spaces but you can set any value you want.
 ### Create a short docstring when missing
 
 When a function has no docstring, a short one will be created based on
-the function name.
+the function name. You can disable this feature with the `--noadd` option
+in command line.
+
+```bash
+docstripy <dir-or-file_path> -s=<style> -w --noadd
+```
+
+### Prevent type hinting
+
+You can disable the type hinting in the docstring with the `--notype` option.
+
+```bash
+docstripy <dir-or-file_path> -s=<style> -w --notype
+```
 
 ### Class docstring
 

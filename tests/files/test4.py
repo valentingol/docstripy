@@ -26,7 +26,7 @@ def myfunc_rest(  # pylint: disable=W0102
     :type name3: Dict[str, int] optional
     :raises ValueError: When something happened
     :raises ValueError: When something else happened
-    :attribute nothing:
+    :var nothing:
     :return result: The first result of the function
     :rtype: int
     :rtype: list

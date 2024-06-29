@@ -24,10 +24,18 @@ def parse_params(
         By default, "type".
     """
     params_list: List[dict] = []
-    len_pattern_1 = len(":" + section_name)
-    len_pattern_2 = len(":" + pattern_type)
+    if section_name == "attribute":
+        # For attributes, we can have multiple sections names
+        section_names: List[str] = ["ivar", "var", "cvar"]
+    else:
+        section_names = [section_name]
     for line in lines:
-        if line.startswith(":" + section_name):
+        if line.startswith(tuple(":" + name for name in section_names)):
+            sec_name = next(
+                name for name in section_names if line.startswith(":" + name)
+            )
+            len_pattern_1 = len(":" + sec_name)
+            len_pattern_2 = len(":" + pattern_type)
             split_dots = re.split(r":\s|\n", line[len_pattern_1:], maxsplit=1)
             param_name = split_dots[0].strip()
             description = split_dots[1].lstrip() if len(split_dots) > 1 else ""
@@ -76,7 +84,9 @@ def parse_sections_ranges(lines: List[str]) -> Dict:
         lines, (":yield",), (":yield", ":rtype", "\n", " ")
     )
     attr_start, attr_end = find_prefix(
-        lines, (":attribute",), (":attribute", ":type", "\n", " ")
+        lines,
+        (":ivar", ":var", ":cvar"),
+        (":ivar", ":var", ":cvar", ":type", "\n", " "),
     )
     return {
         "_parameters": [params_start, params_end],
