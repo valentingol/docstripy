@@ -116,7 +116,5 @@ def is_define_section(line: str) -> bool:
     if not 65 <= ord_n <= 90:
         return False
     short_line = line[:-2].strip()
-    if " " in short_line:
-        # Multiple words
-        return False
-    return True
+    # Escape means multiple words
+    return " " not in short_line
