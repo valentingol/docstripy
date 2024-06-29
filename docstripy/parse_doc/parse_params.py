@@ -46,21 +46,24 @@ def parse_params_all(
     Example
     -------
     One can parse a docstring as follows:
-    [
-        {
-            'name': 'param1',
-            'type': 'int',
-            'optional': False,
-            'description': ['Description of param1\n'],
-        },
-        {
-            'name': 'param2',
-            'type': 'str',
-            'optional': True,
-            'description': ['Description of param2\n'],
-            'default': '""',
-        },
-    ],
+
+    .. code-block:: python
+
+        [
+            {
+                'name': 'param1',
+                'type': 'int',
+                'optional': False,
+                'description': ['Description of param1\n'],
+            },
+            {
+                'name': 'param2',
+                'type': 'str',
+                'optional': True,
+                'description': ['Description of param2\n'],
+                'default': '""',
+            },
+        ],
     """
     pattern_type_rest = "rtype" if section_name in ("return", "yield") else "type"
     parse_params_rest_patterns = partial(
