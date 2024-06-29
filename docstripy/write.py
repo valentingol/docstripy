@@ -15,7 +15,11 @@ from docstripy.parse_doc.main_parser import parse_docstring
 def generate_new_file(file_lines: List[str], docstr_config: dict) -> List[str]:
     """Generate new file with the updated docstrings."""
     try:
-        range_docstrs, sections_list, to_insert = parse_docstring(file_lines)
+        add_missing = docstr_config["add_missing"]
+        range_docstrs, sections_list, to_insert = parse_docstring(
+            file_lines,
+            add_missing=add_missing,
+        )
     except (
         IndexError,
         ValueError,
