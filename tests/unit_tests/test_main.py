@@ -132,4 +132,6 @@ def test_errors(capfd: pytest.CaptureFixture) -> None:
     sys.argv = ["docstripy", "tests/files"]
     with pytest.raises(ValueError, match="You must specify an output path.*"):
         parse_args()
+    if os.path.exists("tests/tmp"):
+        shutil.rmtree("tests/tmp")
     sys.argv = old_argv
