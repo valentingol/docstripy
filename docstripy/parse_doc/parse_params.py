@@ -126,7 +126,7 @@ def extract_default_value(lines: List[str]) -> Tuple[List[str], str]:
             default_split1, default_split_2 = line.rsplit(pattern, maxsplit=1)
             default = default_split_2
             for break_pattern in [".\n", "\n", ". "]:
-                default = default.split(break_pattern)[0]
+                default = default.split(break_pattern)[0].strip()
             if default + "." in default_split_2:
                 line = default_split1 + default_split_2.replace(default + ".", "")
             else:
