@@ -61,7 +61,7 @@ def test_params() -> None:
     check.equal(params_dict_np2, expected_dict)
     check.equal(params_dict_google2, expected_dict)
 
-    with open("tests/files/test6.py", "r", encoding="utf-8") as file:
+    with open("tests/files/test7.py", "r", encoding="utf-8") as file:
         lines = file.readlines()
     doc = remove_indent(lines[9:12])
     params = parse_params_all(doc, style="google")
