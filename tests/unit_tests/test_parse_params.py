@@ -60,3 +60,18 @@ def test_params() -> None:
     check.equal(params_dict_rest2, expected_dict)
     check.equal(params_dict_np2, expected_dict)
     check.equal(params_dict_google2, expected_dict)
+
+    with open("tests/files/test7.py", "r", encoding="utf-8") as file:
+        lines = file.readlines()
+    doc = remove_indent(lines[9:12])
+    params = parse_params_all(doc, style="google")
+    expected_dict = [
+        {
+            "name": "alpha",
+            "type": "float",
+            "optional": True,
+            "description": ["A parameter.\n"],
+            "default": "0.25",
+        },
+    ]
+    check.equal(params, expected_dict)
